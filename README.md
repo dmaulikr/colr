@@ -1,2 +1,2 @@
-# Rood
+# ColorTheory
 Color theory game.
