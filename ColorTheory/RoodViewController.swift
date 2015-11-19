@@ -10,9 +10,8 @@ import UIKit
 
 class RoodViewController: UIViewController {
 
-  @IBInspectable
+  //@IBInspectable
     var lineWidth: CGFloat = 0.5
-    
     
     
     @IBOutlet weak var gameView: GameView!
