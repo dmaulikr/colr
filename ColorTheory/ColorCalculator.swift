@@ -8,13 +8,6 @@
 
 import Foundation
 
-// get user input
-func input() -> String {
-    let keyboard = NSFileHandle.fileHandleWithStandardInput()
-    let inputData = keyboard.availableData
-    return NSString(data: inputData, encoding:NSUTF8StringEncoding) as! String
-}
-
 // calculate max of 3 floating point values
 func calculateMax(r:Double, y:Double, b:Double) -> Double {
     var max = r
@@ -64,19 +57,9 @@ func PiecesToRYB(var color:Double, max:Double) -> Double {
     return color
 }
 
-func colorCalculator(){
+func colorCalculator(){/*
     var r:Double, y:Double, b:Double
     var RGB_Red, RGB_Green, RGB_Blue: Int
-    
-    // get user input of how many pieces of each color there are
-    print("red: ")
-    r = Double(input())!
-    
-    print("yellow: ")
-    y = Double(input())!
-    
-    print("blue: ")
-    b = Double(input())!
     
     // calculate RYB value from pieces
     let max = calculateMax(r, y:y, b:b)
@@ -90,5 +73,5 @@ func colorCalculator(){
     RGB_Blue = Int(RYBtoRGB(r, y:y, b:b, i:2) + 0.5)
     
     print("\(r) \(y) \(b)")
-    print("\(RGB_Red) \(RGB_Green) \(RGB_Blue)")
+    print("\(RGB_Red) \(RGB_Green) \(RGB_Blue)")*/
 }
