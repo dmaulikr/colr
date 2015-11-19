@@ -8,13 +8,17 @@
 
 import UIKit
 
-@IBDesignable
 class Block {
+    
+    
+    
     
     var Path : UIBezierPath = UIBezierPath()
     var PathName : String
     var lineWidth: CGFloat
-    var posX : Double
+    
+    
+    var posX : Double 
     var posY : Double
     
     //(x-a)^4 + (y-b)^4 = r^4

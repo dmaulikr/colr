@@ -8,13 +8,15 @@
 
 import UIKit
 
+
 class RoodViewController: UIViewController {
 
-  //@IBInspectable
+  
     var lineWidth: CGFloat = 0.5
     
     
-    @IBOutlet weak var gameView: GameView!
+    @IBOutlet var gameView: GameView!
+
     
     var Center: CGPoint {
         return gameView.convertPoint(gameView.center, fromView: gameView.superview)
@@ -44,6 +46,7 @@ class RoodViewController: UIViewController {
         
         let Block3 = Block(PathName: PathNames.Block3, posX: Double(gameView.center.x + 105), posY: Double(gameView.center.y), lineWidth: CGFloat(0.5))
         
+       
         Block1.DrawSquircle()
         Block2.DrawSquircle()
         Block3.DrawSquircle()
@@ -51,6 +54,7 @@ class RoodViewController: UIViewController {
         
         
         //make visible by adding to gameView
+
         gameView.setPath(Block1.Path, named: PathNames.Block1)
         gameView.setPath(Block2.Path, named: PathNames.Block2)
         gameView.setPath(Block3.Path, named: PathNames.Block3)

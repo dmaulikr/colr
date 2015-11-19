@@ -9,14 +9,20 @@
 import UIKit
     
 
-
-
-class GameView: UIView {
+@IBDesignable class GameView: UIView {
+    
     
     private var bezierPaths = [String:UIBezierPath]() //strings as the keys
     //UIBezierPaths as the arguments
     
-    var color: UIColor = UIColor.lightGrayColor()
+    @IBInspectable
+    var color: UIColor = UIColor.lightGrayColor() {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    
     
     func setPath(path: UIBezierPath?, named name: String) {
         //adds to dictionary
