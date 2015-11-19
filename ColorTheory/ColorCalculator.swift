@@ -64,7 +64,7 @@ func PiecesToRYB(var color:Double, max:Double) -> Double {
     return color
 }
 
-func main(){
+func colorCalculator(){
     var r:Double, y:Double, b:Double
     var RGB_Red, RGB_Green, RGB_Blue: Int
     

@@ -1,2 +1,0 @@
-# ColorTheory
-Color theory game.
