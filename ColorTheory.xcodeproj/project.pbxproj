@@ -19,6 +19,7 @@
 		5A34E9951BFD4D2200B15B4D /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A34E9941BFD4D2200B15B4D /* GameView.swift */; };
 		5A34E9971BFD4D2800B15B4D /* RoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A34E9961BFD4D2800B15B4D /* RoodViewController.swift */; };
 		5AB541A11BFD4D59001F480F /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 5AB541A01BFD4D59001F480F /* README.md */; };
+		5AB541A31BFD5080001F480F /* RYBtoRGB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5AB541A21BFD5080001F480F /* RYBtoRGB.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		5A34E9941BFD4D2200B15B4D /* GameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		5A34E9961BFD4D2800B15B4D /* RoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoodViewController.swift; sourceTree = "<group>"; };
 		5AB541A01BFD4D59001F480F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		5AB541A21BFD5080001F480F /* RYBtoRGB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RYBtoRGB.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 				5A34E9941BFD4D2200B15B4D /* GameView.swift */,
 				5A34E9901BFD4D1200B15B4D /* Block.swift */,
 				5A34E9911BFD4D1200B15B4D /* ColorCalculator.swift */,
+				5AB541A21BFD5080001F480F /* RYBtoRGB.cpp */,
 				5A34E9641BFD4CFA00B15B4D /* ViewController.swift */,
 				5A34E9661BFD4CFA00B15B4D /* Main.storyboard */,
 				5AB541A01BFD4D59001F480F /* README.md */,
@@ -271,6 +274,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AB541A31BFD5080001F480F /* RYBtoRGB.cpp in Sources */,
 				5A34E9971BFD4D2800B15B4D /* RoodViewController.swift in Sources */,
 				5A34E9921BFD4D1200B15B4D /* Block.swift in Sources */,
 				5A34E9931BFD4D1200B15B4D /* ColorCalculator.swift in Sources */,
@@ -419,10 +423,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = ColorTheory/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Singulariti.ColorTheory;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -430,6 +436,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = ColorTheory/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Singulariti.ColorTheory;
