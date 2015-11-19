@@ -7,30 +7,30 @@
 //
 
 import UIKit
+    
+
+
 
 class GameView: UIView {
     
-    var lineWidth: CGFloat = 5 {didSet { setNeedsDisplay() } }
+    private var bezierPaths = [String:UIBezierPath]() //strings as the keys
+    //UIBezierPaths as the arguments
     
-    var color: UIColor = UIColor.lightGrayColor() {didSet { setNeedsDisplay() } }
-
-
-    var Center: CGPoint {
-        return convertPoint(center, fromView: superview)
-    }
+    var color: UIColor = UIColor.lightGrayColor()
     
-    var Radius: CGFloat {
-        return ((min(bounds.size.width, bounds.size.height))/4)
+    func setPath(path: UIBezierPath?, named name: String) {
+        //adds to dictionary
+        bezierPaths[name] = path
+        //changes model so you need setNeedDisplay
+        setNeedsDisplay()
     }
-
     override func drawRect(rect: CGRect) {
-        let Path = UIBezierPath(arcCenter: Center, radius: Radius, startAngle: 0, endAngle: CGFloat(2*M_PI), clockwise: true)
-        
-            Path.lineWidth = lineWidth
+        for(_, path) in bezierPaths {
             color.set()
-            Path.fill()
-            Path.stroke()
+            path.fill()
+            path.stroke()
+        }
     }
     
-
 }
+
