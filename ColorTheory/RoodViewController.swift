@@ -10,21 +10,28 @@ import UIKit
 
 
 class RoodViewController: UIViewController {
+    
+    
 
-  
-    var lineWidth: CGFloat = 0.5
-    
-    
-    @IBOutlet var gameView: GameView!
+    @IBOutlet weak var gameView: GameView!
 
     
-    var Center: CGPoint {
-        return gameView.convertPoint(gameView.center, fromView: gameView.superview)
+    var color: UIColor = UIColor.lightGrayColor() {
+        didSet {
+            
+            UpdateUI()
+        }
     }
+    
+    
     
     var Radius: CGFloat {
         return ((min(gameView.bounds.size.width, gameView.bounds.size.height))/4)
     }
+    
+    
+    
+    
     
 
     
@@ -36,30 +43,31 @@ class RoodViewController: UIViewController {
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         
-        let Block1 = Block(PathName: PathNames.Block1, posX: Double(gameView.center.x - 105), posY: Double(gameView.center.y), lineWidth: CGFloat(0.5))
-        
-        let Block2 = Block(PathName: PathNames.Block2, posX: Double(gameView.center.x), posY: Double(gameView.center.y), lineWidth: CGFloat(0.5))
-        
-        let Block3 = Block(PathName: PathNames.Block3, posX: Double(gameView.center.x + 105), posY: Double(gameView.center.y), lineWidth: CGFloat(0.5))
-        
-       
-        Block1.DrawSquircle()
-        Block2.DrawSquircle()
-        Block3.DrawSquircle()
-        
-        
-        
-        //make visible by adding to gameView
-
-        gameView.setPath(Block1.Path, named: PathNames.Block1)
-        gameView.setPath(Block2.Path, named: PathNames.Block2)
-        gameView.setPath(Block3.Path, named: PathNames.Block3)
+    
         
     }
+    
+    func UpdateUI() {
+        
+        gameView?.setNeedsDisplay()
+        //optional since when segue is preparing, outlets are not set!
+    }
+    
+    
+    
     
     
         
