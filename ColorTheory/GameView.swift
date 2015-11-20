@@ -27,6 +27,13 @@ class GameView: UIView {
         }
     }
     
+    
+    
+    var Rectangle : CGRect = CGRect(origin: CGPoint.zero, size: CGSize.zero);
+    
+    
+    
+    
     var Center: CGPoint {
         return convertPoint(center, fromView: superview)
     }
@@ -46,22 +53,17 @@ class GameView: UIView {
     
     
     
-    func DrawBlock(posX : CGFloat, posY: CGFloat, size: CGFloat) -> UIBezierPath {
-        
-        let Path : UIBezierPath = UIBezierPath()
+    func DrawBlock(originX: CGFloat, originY: CGFloat, size: CGFloat) -> UIBezierPath {
         
         
         
+        Rectangle.origin.x = originX
+        Rectangle.origin.y = originY
+        Rectangle.size.width = size
+        Rectangle.size.height = size
         
-        let point = CGPoint(x: posX - size, y: posY - size)
-        let point1 = CGPoint(x: posX + size, y: posY - size)
-        let point2 = CGPoint(x: posX + size, y : posY + size)
-        let point3 = CGPoint(x: posX - size, y: posY + size)
+        let Path = UIBezierPath(roundedRect: Rectangle, cornerRadius: 1)
         
-        Path.moveToPoint(point)
-        Path.addLineToPoint(point1)
-        Path.addLineToPoint(point2)
-        Path.addLineToPoint(point3)
         
         Path.lineWidth = lineWidth
         
@@ -187,11 +189,23 @@ class GameView: UIView {
         
         //for IBDesignability
         
-        let Path = DrawBlock(Center.x, posY: Center.y, size: 20)
+        let Path = DrawBlock(Center.x, originY: Center.y - 250, size: 100)
+        
+        
+        let Path1 = DrawBlock(Center.x, originY: Center.y - 50, size: 100)
+        
+        
+        let Path2 = DrawBlock(Center.x, originY: Center.y + 150, size: 100)
         
         color.set()
         Path.fill()
         Path.stroke()
+        
+        Path1.fill()
+        Path1.stroke()
+        
+        Path2.fill()
+        Path2.stroke()
         
         
         

@@ -17,19 +17,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O8c-1k-Ik0" customClass="GameView" customModule="ColorTheory" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O8c-1k-Ik0" customClass="GameView" customModule="ColorTheory" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="color">
-                                        <color key="value" red="1" green="0.88213760556709475" blue="0.41951795133758851" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="value" red="0.70322364267676774" green="0.60283553401661383" blue="0.67216202133568292" alpha="1" colorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="O8c-1k-Ik0" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="Gwh-x0-j5P"/>
+                            <constraint firstAttribute="trailing" secondItem="O8c-1k-Ik0" secondAttribute="trailing" id="d4t-nc-83u"/>
+                            <constraint firstItem="O8c-1k-Ik0" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="kCI-QK-Ryy"/>
+                            <constraint firstItem="O8c-1k-Ik0" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="sBm-tv-7JV"/>
+                        </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="color">
                                 <color key="value" red="0.27915912496647699" green="0.42151704889775526" blue="0.65232402146464641" alpha="1" colorSpace="calibratedRGB"/>
@@ -41,6 +50,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="cN7-pS-Ulz">
+                    <connections>
+                        <action selector="dragBlock:" destination="BYZ-38-t0r" id="cEL-TA-0lb"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="17" y="281"/>
         </scene>

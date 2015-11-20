@@ -25,6 +25,13 @@ class RoodViewController: UIViewController {
     
     
     
+    @IBAction func dragBlock(sender: UIPanGestureRecognizer) {
+    }
+    
+    
+    
+    
+    
     var Radius: CGFloat {
         return ((min(gameView.bounds.size.width, gameView.bounds.size.height))/4)
     }
