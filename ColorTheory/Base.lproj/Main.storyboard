@@ -28,6 +28,15 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="color">
                                         <color key="value" red="0.70322364267676774" green="0.60283553401661383" blue="0.67216202133568292" alpha="1" colorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="numberOfBlocks">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="blockSize">
+                                        <real key="value" value="70"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="blockSpacing">
+                                        <integer key="value" value="77"/>
+                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>

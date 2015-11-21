@@ -27,6 +27,34 @@ class GameView: UIView {
         }
     }
     
+    @IBInspectable
+    var numberOfBlocks: Int = 3 {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    @IBInspectable
+    var blockSize : CGFloat = 50 {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    @IBInspectable
+    var blockSpacing : Int = 75 {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    
+    var CornerRadius: CGFloat {
+        return 0
+    }
+    
+    
+    
     
     
     var Rectangle : CGRect = CGRect(origin: CGPoint.zero, size: CGSize.zero);
@@ -38,19 +66,35 @@ class GameView: UIView {
         return convertPoint(center, fromView: superview)
     }
     
-    private var bezierPaths = [String:UIBezierPath]() //strings as the keys
-    //UIBezierPaths as the arguments
-
     
     
-    func setPath(path: UIBezierPath?, named name: String) {
+    
+    
+    var Paths = [UIBezierPath]() {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*
+    func setPath(path: UIBezierPath?) {
         //adds to dictionary
-        bezierPaths[name] = path
+        Paths.push(path)
         //changes model so you need setNeedDisplay
         setNeedsDisplay()
     }
     
-    
+    */
     
     
     func DrawBlock(originX: CGFloat, originY: CGFloat, size: CGFloat) -> UIBezierPath {
@@ -62,7 +106,7 @@ class GameView: UIView {
         Rectangle.size.width = size
         Rectangle.size.height = size
         
-        let Path = UIBezierPath(roundedRect: Rectangle, cornerRadius: 1)
+        let Path = UIBezierPath(roundedRect: Rectangle, cornerRadius: CornerRadius)
         
         
         Path.lineWidth = lineWidth
@@ -164,8 +208,7 @@ class GameView: UIView {
             x += 0.1
         }
         
-        
-        //let size = CGSize(width: 20, height: 20)
+    
         
         
         Path.lineWidth = lineWidth
@@ -178,6 +221,22 @@ class GameView: UIView {
     
     
     
+    //creates an array of Block paths
+    func ArrangeBlocks(numBlocks: Int)
+    {
+        
+        
+        for var i = 0; i < numBlocks; ++i {
+            
+            
+            //appends the array of Paths depending on numberOfBlocks
+            Paths.append(DrawBlock(Center.x, originY: Center.y - 250 + CGFloat(i*blockSpacing), size: blockSize))
+            
+        }
+        
+        
+    }
+    
     
     
     
@@ -187,25 +246,17 @@ class GameView: UIView {
     override func drawRect(rect: CGRect) {
         
         
-        //for IBDesignability
-        
-        let Path = DrawBlock(Center.x, originY: Center.y - 250, size: 100)
-        
-        
-        let Path1 = DrawBlock(Center.x, originY: Center.y - 50, size: 100)
-        
-        
-        let Path2 = DrawBlock(Center.x, originY: Center.y + 150, size: 100)
+        ArrangeBlocks(numberOfBlocks)
         
         color.set()
-        Path.fill()
-        Path.stroke()
         
-        Path1.fill()
-        Path1.stroke()
+        for var i = 0; i < numberOfBlocks; ++i {
+            
+            Paths[i].fill()
+            Paths[i].stroke()
+        }
         
-        Path2.fill()
-        Path2.stroke()
+       
         
         
         
