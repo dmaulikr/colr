@@ -8,10 +8,20 @@
 
 import UIKit
 
-
+//Delegation
+//
+protocol GameViewDataSource: class {
+    func XYForGameView(sender: GameView) -> CGPoint?
+    
+}
 
 @IBDesignable
 class GameView: UIView {
+    
+    var Center: CGPoint {
+        return convertPoint(center, fromView: superview)
+    }
+    
     
     @IBInspectable
     var color: UIColor = UIColor.lightGrayColor() {
@@ -28,7 +38,7 @@ class GameView: UIView {
     }
     
     @IBInspectable
-    var numberOfBlocks: Int = 3 {
+    var numberOfBlocks: Int = 1 {
         didSet {
             setNeedsDisplay()
         }
@@ -49,6 +59,27 @@ class GameView: UIView {
     }
     
     
+    //Cartesian interpretation
+    @IBInspectable
+    var YTranslation : CGFloat = CGFloat(50.0) {
+
+        didSet {
+            
+            setNeedsDisplay()
+        }
+    }
+    
+    
+    //Cartesian interpretation
+    @IBInspectable
+    var XTranslation : CGFloat = CGFloat(50.0) {
+
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    
     var CornerRadius: CGFloat {
         return 0
     }
@@ -62,9 +93,12 @@ class GameView: UIView {
     
     
     
-    var Center: CGPoint {
-        return convertPoint(center, fromView: superview)
-    }
+    
+    
+    
+    //GameViewDataSource for x and y position
+    weak var XYDataSource: GameViewDataSource?
+    
     
     
     
@@ -86,15 +120,18 @@ class GameView: UIView {
     
     
     
-    /*
-    func setPath(path: UIBezierPath?) {
-        //adds to dictionary
-        Paths.push(path)
-        //changes model so you need setNeedDisplay
-        setNeedsDisplay()
-    }
     
-    */
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     func DrawBlock(originX: CGFloat, originY: CGFloat, size: CGFloat) -> UIBezierPath {
@@ -229,15 +266,45 @@ class GameView: UIView {
         for var i = 0; i < numBlocks; ++i {
             
             
-            //appends the array of Paths depending on numberOfBlocks
-            Paths.append(DrawBlock(Center.x, originY: Center.y - 250 + CGFloat(i*blockSpacing), size: blockSize))
+            
+            
+            //receives interpreted coordinates from RoodViewController
+            let BlockPoint : CGPoint = XYDataSource?.XYForGameView(self) ?? CGPointZero
+          
+            //Delegation
+            //appends the array of Paths depending on numberOfBlocks,
+            //and other parameters
+            Paths.append(DrawBlock(BlockPoint.x, originY:  BlockPoint.y + CGFloat(i*blockSpacing), size: blockSize))
             
         }
         
         
     }
     
-    
+    /*
+    func translate(gesture: UIPanGestureRecognizer) {
+        
+        switch gesture.state {
+        case .Ended: fallthrough
+        case .Changed:
+            //how much it as changed in the gameView's
+            //coordinate system
+            let translation = gesture.translationInView(self)
+            let XdragChange = translation.x
+            let YdragChange = translation.y
+            
+            if XdragChange != 0 {
+                XTranslation += XdragChange
+                YTranslation += YdragChange
+                print(XTranslation)
+                print(YTranslation)
+                gesture.setTranslation(CGPointZero, inView: self)
+                
+            }
+        default: break
+        }
+    }
+*/
     
     
     
@@ -245,15 +312,16 @@ class GameView: UIView {
     
     override func drawRect(rect: CGRect) {
         
+        Paths.removeAll()
         
         ArrangeBlocks(numberOfBlocks)
         
         color.set()
         
-        for var i = 0; i < numberOfBlocks; ++i {
+        for x in Paths {
             
-            Paths[i].fill()
-            Paths[i].stroke()
+            x.fill()
+            x.stroke()
         }
         
        

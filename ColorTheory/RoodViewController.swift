@@ -9,11 +9,20 @@
 import UIKit
 
 
-class RoodViewController: UIViewController {
+class RoodViewController: UIViewController, GameViewDataSource {
     
     
 
-    @IBOutlet weak var gameView: GameView!
+    @IBOutlet weak var gameView: GameView! {
+        didSet {
+            gameView.XYDataSource = self
+            
+            //gameView.addGestureRecognizer(UIPanGestureRecognizer(target: gameView, action: "translate:"))
+            
+        }
+        
+        
+    }
 
     
     var color: UIColor = UIColor.lightGrayColor() {
@@ -23,9 +32,50 @@ class RoodViewController: UIViewController {
         }
     }
     
+    //X of block being dragged
+    var xpos: CGFloat = 100 {
+        didSet {
+            UpdateUI()
+        }
+    }
     
     
-    @IBAction func dragBlock(sender: UIPanGestureRecognizer) {
+    
+    //Y of block being dragged
+    var ypos: CGFloat  = 100 {
+        didSet {
+            UpdateUI()
+        }
+    }
+    
+    
+    
+    private struct Constants {
+        static let GestureScale: CGFloat = 1
+    }
+    
+    
+    
+    @IBAction func dragBlock(gesture: UIPanGestureRecognizer) {
+        switch gesture.state {
+        case .Ended: fallthrough
+        case .Changed:
+            //how much it as changed in the gameView's
+            //coordinate system
+            let translation = gesture.translationInView(gameView)
+            let XdragChange = translation.x
+            let YdragChange = translation.y
+            
+            if XdragChange != 0 {
+                xpos += XdragChange
+                ypos += YdragChange
+                print(xpos)
+                print(ypos)
+                gesture.setTranslation(CGPointZero, inView: gameView)
+                
+            }
+        default: break
+        }
     }
     
     
@@ -74,7 +124,10 @@ class RoodViewController: UIViewController {
     
     
     
-    
+    func XYForGameView(sender: GameView) -> CGPoint? {
+        let XYPoint = CGPoint(x: xpos, y: ypos)
+        return XYPoint
+    }
         
     
     
