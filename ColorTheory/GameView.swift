@@ -11,16 +11,25 @@ import UIKit
 //Delegation
 //
 protocol GameViewDataSource: class {
-    func XYForGameView(sender: GameView) -> CGPoint?
+    func XYForGameView(sender: GameView) -> [CGPoint]?
+    func NumberOfBlocksForGameView(sender: GameView) -> Int?
     
 }
 
 @IBDesignable
 class GameView: UIView {
     
+    
+    
+    
     var Center: CGPoint {
         return convertPoint(center, fromView: superview)
     }
+    
+    
+    //IBInspectable values overwrite these
+    //They are priority. It will show those values
+    //instead of these when you run the game.
     
     
     @IBInspectable
@@ -37,8 +46,12 @@ class GameView: UIView {
         }
     }
     
-    @IBInspectable
-    var numberOfBlocks: Int = 2 {
+
+    
+    
+    
+    //DataSource dependent
+    var numberOfBlocks: Int = 5 {
         didSet {
             setNeedsDisplay()
         }
@@ -59,8 +72,8 @@ class GameView: UIView {
     }
     
     
-    //Cartesian interpretation
-    @IBInspectable
+    
+    
     var YPosition : CGFloat = CGFloat(50.0) {
 
         didSet {
@@ -69,9 +82,8 @@ class GameView: UIView {
         }
     }
     
+   
     
-    //Cartesian interpretation
-    @IBInspectable
     var XPosition : CGFloat = CGFloat(50.0) {
 
         didSet {
@@ -99,9 +111,9 @@ class GameView: UIView {
     
     
     //GameViewDataSource for x and y position
-    weak var XYDataSource: GameViewDataSource?
+    weak var DataSource: GameViewDataSource?
     
-    
+   
     
     
     
@@ -113,6 +125,17 @@ class GameView: UIView {
     }
     
     
+    //DataSource dependent
+    var BlockPoints : [CGPoint] = [CGPoint]() {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    
+    
+    
+
     
     
     
@@ -120,16 +143,22 @@ class GameView: UIView {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    func SetUpBlockPoints() -> [CGPoint] {
+        
+        
+        var BlockPointsArray : [CGPoint] = [CGPoint]()
+        
+        for var i = 0; i < numberOfBlocks; i++ {
+            
+            BlockPointsArray.append(CGPoint(x: CGFloat(0.0), y: CGFloat(0.0) + CGFloat(i*blockSpacing)))
+            //[CGPointZero, CGPoint(x: 0, y: 0 + CGFloat(75)), CGPoint(x: 0, y: 0 + CGFloat(2*75))]
+        }
+        
+        
+        print(BlockPointsArray)
+        
+        return BlockPointsArray
+    }
     
     
     
@@ -264,26 +293,41 @@ class GameView: UIView {
     func ArrangeBlocks(numBlocks: Int)
     {
         
+        //receives interpreted coordinates from RoodViewController
+        BlockPoints = DataSource?.XYForGameView(self) ?? [CGPointZero, CGPoint(x: 0, y: 0 + CGFloat(75)), CGPoint(x: 0, y: 0 + CGFloat(2*75))]
+        
+        
         
         for var i = 0; i < numBlocks; ++i {
             
             
             
             
-            //receives interpreted coordinates from RoodViewController
-            let BlockPoint : CGPoint = XYDataSource?.XYForGameView(self) ?? CGPointZero
+            print("DRAWN")
+            
           
+            XPosition = BlockPoints[i].x
+            YPosition = BlockPoints[i].y
             
             
             
             //Delegation
             //appends the array of Paths depending on numberOfBlocks,
             //and other parameters
-            Paths.append(DrawBlock(BlockPoint.x, originY:  BlockPoint.y + CGFloat(i*blockSpacing), size: blockSize))
             
-            //keep track of x and y position
-            XPosition = BlockPoint.x
-            YPosition = BlockPoint.y
+            
+            
+            
+            Paths.append(DrawBlock(XPosition, originY:  YPosition, size: blockSize))
+            
+            //keep track of x and y position of ith block
+            BlockPoints[i].x = XPosition
+            BlockPoints[i].y = YPosition
+            
+            
+            
+            
+            
             
         }
         
@@ -315,20 +359,29 @@ class GameView: UIView {
     }
 */
     
-    
+    func SetUpNumberOfBlocks() {
+        numberOfBlocks = (DataSource?.NumberOfBlocksForGameView(self))!
+    }
     
     //Drawing
-    
+    //called everytime setNeedsDisplay() is called
     override func drawRect(rect: CGRect) {
         
+        
+        //clears array of paths each time setNeedsDisplay is called
         Paths.removeAll()
+        
+        
+
         
         ArrangeBlocks(numberOfBlocks)
         
-        color.set()
+        
+        
+        
         
         for x in Paths {
-            
+            color.set()
             x.fill()
             x.stroke()
         }
