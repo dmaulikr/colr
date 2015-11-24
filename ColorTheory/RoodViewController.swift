@@ -49,39 +49,90 @@ class RoodViewController: UIViewController, GameViewDataSource {
     }
     
     
+    var touchCoordinates : CGPoint = CGPoint(x: 0, y: 0)
+
     
     private struct Constants {
         static let GestureScale: CGFloat = 1
     }
     
     
+    //if touch is within block validation
+    //so that while holding after touching within the block
+    //the dragging is valid, even if the finger location is 
+    //outside the block sometimes
+    var valid : Bool = false
     
     @IBAction func dragBlock(gesture: UIPanGestureRecognizer) {
+        
+        
+        
         switch gesture.state {
-        case .Ended: fallthrough
-        case .Changed:
+        case .Ended:
+            valid = false
+            
+        case .Began:
+            
             //how much it as changed in the gameView's
             //coordinate system
             let translation = gesture.translationInView(gameView)
-            let XdragChange = translation.x
-            let YdragChange = translation.y
+            let Xdrag = translation.x
+            let Ydrag = translation.y
             
-            if XdragChange != 0 {
-                xpos += XdragChange
-                ypos += YdragChange
-                print(xpos)
-                print(ypos)
+            /*gameView.XPosition < xpos && xpos < gameView.XPosition + gameView.blockSize && gameView.YPosition < ypos && ypos < gameView.YPosition + gameView.blockSize*/
+            
+            //if the touch is within the block
+            if (gameView.XPosition < touchCoordinates.x && touchCoordinates.x < gameView.XPosition + gameView.blockSize && gameView.YPosition < touchCoordinates.y && touchCoordinates.y < gameView.YPosition + gameView.blockSize) {
+                valid = true
+                
+                xpos += Xdrag
+                ypos += Ydrag
+                //print(xpos)
+                //print(ypos)
+                //print(gameView.XPosition)
+                //print(gameView.YPosition)
+                
+                
+                //makes it incremental
                 gesture.setTranslation(CGPointZero, inView: gameView)
                 
             }
+            
+            break
+            
+        case .Changed:
+            
+            
+            if (valid == true)
+            {
+            let translation = gesture.translationInView(gameView)
+            let Xdrag = translation.x
+            let Ydrag = translation.y
+            xpos += Xdrag
+            ypos += Ydrag
+            
+            
+            //makes it incremental
+            gesture.setTranslation(CGPointZero, inView: gameView)
+            
+            
+            }
+            
+            
+            
         default: break
         }
     }
     
     
     
-    
-    
+    //detects finger touch location
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let touch = touches.first {
+            touchCoordinates = touch.locationInView(gameView)
+            //print(touchCoordinates)
+        }
+    }
     
     
     

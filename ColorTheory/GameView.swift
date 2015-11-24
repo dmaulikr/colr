@@ -38,7 +38,7 @@ class GameView: UIView {
     }
     
     @IBInspectable
-    var numberOfBlocks: Int = 1 {
+    var numberOfBlocks: Int = 2 {
         didSet {
             setNeedsDisplay()
         }
@@ -61,7 +61,7 @@ class GameView: UIView {
     
     //Cartesian interpretation
     @IBInspectable
-    var YTranslation : CGFloat = CGFloat(50.0) {
+    var YPosition : CGFloat = CGFloat(50.0) {
 
         didSet {
             
@@ -72,7 +72,7 @@ class GameView: UIView {
     
     //Cartesian interpretation
     @IBInspectable
-    var XTranslation : CGFloat = CGFloat(50.0) {
+    var XPosition : CGFloat = CGFloat(50.0) {
 
         didSet {
             setNeedsDisplay()
@@ -83,6 +83,8 @@ class GameView: UIView {
     var CornerRadius: CGFloat {
         return 0
     }
+    
+    
     
     
     
@@ -271,10 +273,17 @@ class GameView: UIView {
             //receives interpreted coordinates from RoodViewController
             let BlockPoint : CGPoint = XYDataSource?.XYForGameView(self) ?? CGPointZero
           
+            
+            
+            
             //Delegation
             //appends the array of Paths depending on numberOfBlocks,
             //and other parameters
             Paths.append(DrawBlock(BlockPoint.x, originY:  BlockPoint.y + CGFloat(i*blockSpacing), size: blockSize))
+            
+            //keep track of x and y position
+            XPosition = BlockPoint.x
+            YPosition = BlockPoint.y
             
         }
         
