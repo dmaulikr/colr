@@ -1,5 +1,5 @@
 # ColorTheory
-Color theory game.
+A game using color theory. 
 
 ## Language
 
