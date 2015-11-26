@@ -74,19 +74,36 @@ class RoodViewController: UIViewController, GameViewDataSource {
     }
     
     
-    var valid : [Bool] = [Bool]()
+    var OnLock : [Bool] = [Bool]()
     
-    func SetUpValidVector() -> [Bool]{
+    //var PickUp : [Bool] = [Bool]()
+    
+    func SetUpOnLockVector() -> [Bool]{
         
-        var validVector = [Bool]()
+        var OnLockVector = [Bool]()
         
         for var i = 0; i < NumberOfBlocks; i++ {
-            validVector.append(false)
+            OnLockVector.append(false)
         }
         
-        return validVector
+        return OnLockVector
         
     }
+    
+    /*
+    func SetUpPickUpVector() -> [Bool]{
+        
+        var PickUpVector = [Bool]()
+        
+        for var i = 0; i < NumberOfBlocks; i++ {
+            PickUpVector.append(false)
+        }
+        
+        return PickUpVector
+        
+    }
+    */
+    
     
     
     /*
@@ -117,7 +134,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
             
             for var i = 0; i < NumberOfBlocks; i++ {
             
-            valid[i] = false
+            OnLock[i] = false
                 
             }
             
@@ -145,7 +162,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 //if the touch is within the block
             if (XYPoints[i].x < touchCoordinates.x && touchCoordinates.x < XYPoints[i].x + gameView.blockSize && XYPoints[i].y < touchCoordinates.y && touchCoordinates.y < XYPoints[i].y + gameView.blockSize) {
                 
-                valid[i] = true
+                OnLock[i] = true
                 
                 XYPoints[i].x += Xdrag
                 XYPoints[i].y += Ydrag
@@ -175,11 +192,22 @@ class RoodViewController: UIViewController, GameViewDataSource {
             //while being dragged
         case .Changed:
             
-            print("CHANGED \(valid)")
+            
+            
+            
+            print("CHANGED \(OnLock)")
+            
+            
+            
             //for each block
             for var i = 0; i < NumberOfBlocks; i++ {
+                
+                
+                
+            //if a block is already locked on (has a finger on it)
             
-            if (valid[i] == true)
+            
+            if (OnLock[i] == true)
             {
                 
                 let translation = gesture.translationInView(gameView)
@@ -194,7 +222,34 @@ class RoodViewController: UIViewController, GameViewDataSource {
             
             
             }
+                
+                /*
+                
+                //if the "dragging" touch is within the block
+            else if (XYPoints[i].x < touchCoordinates.x && touchCoordinates.x < XYPoints[i].x + gameView.blockSize && XYPoints[i].y < touchCoordinates.y && touchCoordinates.y < XYPoints[i].y + gameView.blockSize) {
+                
+                
+                
+                    let translation = gesture.translationInView(gameView)
+                    let Xdrag = translation.x
+                    let Ydrag = translation.y
+                    XYPoints[i].x += Xdrag
+                    XYPoints[i].y += Ydrag
+                
+                
+                    OnLock[i] = true
+                    
+                    //makes it incremental
+                    gesture.setTranslation(CGPointZero, inView: gameView)
+                    
+                
+                }
+
+
+            */
             
+                
+                
             }
             
         default: break
@@ -229,7 +284,8 @@ class RoodViewController: UIViewController, GameViewDataSource {
     
     
     
-    
+    //called when views are loaded?
+    //only called once
     
     override func viewDidLoad() {
         
@@ -237,7 +293,8 @@ class RoodViewController: UIViewController, GameViewDataSource {
         super.viewDidLoad()
         
         //sets up vector of bools checking for validity of being selected
-        valid = SetUpValidVector()
+        OnLock = SetUpOnLockVector()
+        //PickUp = SetUpPickUpVector()
         
         gameView.SetUpNumberOfBlocks()
         
