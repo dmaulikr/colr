@@ -23,6 +23,12 @@ class RoodViewController: UIViewController, GameViewDataSource {
         
         
     }
+    
+    var gameStage = GameStage() {
+        didSet {
+            UpdateUI()
+        }
+    }
 
     
     var color: UIColor = UIColor.lightGrayColor() {
@@ -32,21 +38,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
         }
     }
     
-    //X of block being dragged
-    var xpos: CGFloat = 100 {
-        didSet {
-            UpdateUI()
-        }
-    }
     
-    
-    
-    //Y of block being dragged
-    var ypos: CGFloat  = 100 {
-        didSet {
-            UpdateUI()
-        }
-    }
     
     //store last touch coordinates
     var touchCoordinates : CGPoint = CGPoint(x: 0, y: 0)
@@ -67,22 +59,44 @@ class RoodViewController: UIViewController, GameViewDataSource {
     }
     
     
-    var NumberOfBlocks : Int = 7 {
-        didSet {
-            UpdateUI()
+    
+    
+    
+    
+    
+    //DataSource dependent
+    func SetUpColorVector() {
+        
+        
+        //append gameStage's color vector with appropriate
+        //number of colors
+        for var i = 0; i < gameStage.NumberOfBlocks; i++ {
+            gameStage.ColorVector.append(UIColor.lightGrayColor())
         }
+        
+        
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     var OnLock : [Bool] = [Bool]()
     
     //var PickUp : [Bool] = [Bool]()
     
-    func SetUpOnLockVector() -> [Bool]{
+    func SetUpOnLockVector() -> [Bool] {
         
         var OnLockVector = [Bool]()
         
-        for var i = 0; i < NumberOfBlocks; i++ {
+        for var i = 0; i < gameStage.NumberOfBlocks; i++ {
             OnLockVector.append(false)
         }
         
@@ -125,6 +139,37 @@ class RoodViewController: UIViewController, GameViewDataSource {
     
     @IBAction func dragBlock(gesture: UIPanGestureRecognizer) {
         
+        let numberOfBlocks = gameStage.NumberOfBlocks
+        
+        let blockSize = gameStage.BlockSize
+        
+        
+        
+       
+        
+        for var l = 0; l < numberOfBlocks; l++ {
+            
+            
+            //If it is within bounds of ColumnOne
+        //then color changes
+            if (gameStage.WithinBoundsOf(XYPoints[l], AreaPoint: gameStage.ColumnOne, Area: CGPoint(x: 50, y: 300))) {
+                
+                gameStage.ColorVector[l] = UIColor.darkGrayColor()
+                
+                
+            }
+            //else
+            //change color back to original color
+            else {
+                
+                gameStage.ColorVector[l] = UIColor.lightGrayColor()
+            }
+            
+            
+            
+        }
+        
+        //print(gameView.ColorVector)
         
         
         switch gesture.state {
@@ -132,11 +177,14 @@ class RoodViewController: UIViewController, GameViewDataSource {
             //when touch is let go
         case .Ended:
             
-            for var i = 0; i < NumberOfBlocks; i++ {
+            for var i = 0; i < numberOfBlocks; i++ {
             
             OnLock[i] = false
                 
+                
             }
+            
+            
             
             //first touch
         case .Began:
@@ -147,28 +195,29 @@ class RoodViewController: UIViewController, GameViewDataSource {
             let Xdrag = translation.x
             let Ydrag = translation.y
             
-            /*gameView.XPosition < xpos && xpos < gameView.XPosition + gameView.blockSize && gameView.YPosition < ypos && ypos < gameView.YPosition + gameView.blockSize*/
-            print("BEGAN")
+            
+            //print("BEGAN")
             
             
             
             
             
             //for each block
-            for var i = 0; i < NumberOfBlocks; i++ {
+            for var i = 0; i < numberOfBlocks; i++ {
                 
                 
-                print(i)
+                //print(i)
                 //if the touch is within the block
-            if (XYPoints[i].x < touchCoordinates.x && touchCoordinates.x < XYPoints[i].x + gameView.blockSize && XYPoints[i].y < touchCoordinates.y && touchCoordinates.y < XYPoints[i].y + gameView.blockSize) {
+            if (gameStage.WithinBoundsOf(touchCoordinates, AreaPoint: XYPoints[i], Area: CGPoint(x: blockSize, y: blockSize))) {
                 
                 OnLock[i] = true
+                
+                //print("Changed \(OnLock)");
                 
                 XYPoints[i].x += Xdrag
                 XYPoints[i].y += Ydrag
                 
-                //print(xpos)
-                //print(ypos)
+                
                 //print(gameView.XPosition)
                 //print(gameView.YPosition)
                 
@@ -195,12 +244,12 @@ class RoodViewController: UIViewController, GameViewDataSource {
             
             
             
-            print("CHANGED \(OnLock)")
+            //print("CHANGED \(OnLock)")
             
             
             
             //for each block
-            for var i = 0; i < NumberOfBlocks; i++ {
+            for var i = 0; i < numberOfBlocks; i++ {
                 
                 
                 
@@ -299,6 +348,11 @@ class RoodViewController: UIViewController, GameViewDataSource {
         gameView.SetUpNumberOfBlocks()
         
         
+        //sets up the color vector in gameView with appropriate number
+        //of colors
+        SetUpColorVector()
+        
+        
         //starts the xy arrays in gameView and in RoodViewController
         //with number of spots according to number of blocks
         gameView.BlockPoints = gameView.SetUpBlockPoints()
@@ -328,6 +382,9 @@ class RoodViewController: UIViewController, GameViewDataSource {
     
     
     
+    //GameViewDataSource Functions
+    
+    
     func XYForGameView(sender: GameView) -> [CGPoint]? {
         
         
@@ -337,11 +394,27 @@ class RoodViewController: UIViewController, GameViewDataSource {
     
     func NumberOfBlocksForGameView(sender: GameView) -> Int? {
         
-        return NumberOfBlocks
+        return gameStage.NumberOfBlocks
+    }
+    
+    func BlockSpacingForGameView(sender: GameView) -> Int? {
+        
+        return gameStage.BlockSpacing
+        
+    }
+    
+        
+    func BlockSizeForGameView(sender: GameView) -> CGFloat? {
+        
+        return gameStage.BlockSize
+        
     }
     
     
+    func ColorVectorForGameView(sender: GameView) -> [UIColor]? {
         
-    
+        return gameStage.ColorVector
+        
+    }
 
 }

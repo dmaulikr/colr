@@ -13,7 +13,9 @@ import UIKit
 protocol GameViewDataSource: class {
     func XYForGameView(sender: GameView) -> [CGPoint]?
     func NumberOfBlocksForGameView(sender: GameView) -> Int?
-    
+    func BlockSpacingForGameView(sender: GameView) -> Int?
+    func BlockSizeForGameView(sender: GameView) -> CGFloat?
+    func ColorVectorForGameView(sender: GameView) -> [UIColor]?
 }
 
 @IBDesignable
@@ -30,10 +32,11 @@ class GameView: UIView {
     //IBInspectable values overwrite these
     //They are priority. It will show those values
     //instead of these when you run the game.
+    //hit enter when changing the value in the storyboard attribute inspector
     
     
     @IBInspectable
-    var color: UIColor = UIColor.lightGrayColor() {
+    var ColorVector: [UIColor] = [UIColor]() {
         didSet {
             setNeedsDisplay()
         }
@@ -65,7 +68,7 @@ class GameView: UIView {
     }
     
     @IBInspectable
-    var blockSpacing : Int = 75 {
+    var blockSpacing : Int = 500 {
         didSet {
             setNeedsDisplay()
         }
@@ -135,23 +138,41 @@ class GameView: UIView {
     
     
     
-
     
     
     
     
     
     
+    //draws blocks in grid formation
     
     func SetUpBlockPoints() -> [CGPoint] {
         
+        //retrieve block spacing from data source
+        blockSpacing = DataSource?.BlockSpacingForGameView(self) ?? 100
         
         var BlockPointsArray : [CGPoint] = [CGPoint]()
         
-        for var i = 0; i < numberOfBlocks; i++ {
+        
+        var i: Int
+        
+        //rows
+        for i = 0; i < numberOfBlocks / 3; i++ {
             
-            BlockPointsArray.append(CGPoint(x: CGFloat(0.0), y: CGFloat(0.0) + CGFloat(i*blockSpacing)))
+            
+            //columns
+            for var j = 0; j < 3; j++ {
+                
+            BlockPointsArray.append(CGPoint(x: CGFloat(0.0) + CGFloat(j*blockSpacing), y: CGFloat(0.0) + CGFloat(i*blockSpacing)))
             //[CGPointZero, CGPoint(x: 0, y: 0 + CGFloat(75)), CGPoint(x: 0, y: 0 + CGFloat(2*75))]
+                
+            }
+        }
+        
+        //leftovers
+        for var k = 0; k < numberOfBlocks % 3; k++ {
+            
+            BlockPointsArray.append(CGPoint(x: CGFloat(0.0) + CGFloat(k*blockSpacing), y: CGFloat(0.0) + CGFloat(i*blockSpacing)))
         }
         
         
@@ -292,8 +313,9 @@ class GameView: UIView {
     //creates an array of Block paths
     func ArrangeBlocks(numBlocks: Int)
     {
-        
+        //retrieve block points from data source
         //receives interpreted coordinates from RoodViewController
+        
         BlockPoints = DataSource?.XYForGameView(self) ?? [CGPointZero, CGPoint(x: 0, y: 0 + CGFloat(75)), CGPoint(x: 0, y: 0 + CGFloat(2*75))]
         
         
@@ -303,7 +325,6 @@ class GameView: UIView {
             
             
             
-            print("DRAWN")
             
           
             XPosition = BlockPoints[i].x
@@ -311,12 +332,9 @@ class GameView: UIView {
             
             
             
-            //Delegation
-            //appends the array of Paths depending on numberOfBlocks,
-            //and other parameters
             
-            
-            
+            //retrieve block spacing from data source
+            blockSize = (DataSource?.BlockSizeForGameView(self))!
             
             Paths.append(DrawBlock(XPosition, originY:  YPosition, size: blockSize))
             
@@ -360,6 +378,7 @@ class GameView: UIView {
 */
     
     func SetUpNumberOfBlocks() {
+        //retrieve number of blocks from data source
         numberOfBlocks = (DataSource?.NumberOfBlocksForGameView(self))!
     }
     
@@ -376,14 +395,18 @@ class GameView: UIView {
         
         ArrangeBlocks(numberOfBlocks)
         
+        //retrieve Color Vector from data source
+        ColorVector = (DataSource?.ColorVectorForGameView(self))!
         
         
-        
-        
-        for x in Paths {
-            color.set()
-            x.fill()
-            x.stroke()
+        //loop through the paths to draw the blocks with appropriate color
+        for (index, value) in Paths.enumerate() {
+            
+            
+            ColorVector[index].set()
+            print(ColorVector[index])
+            value.fill()
+            value.stroke()
         }
         
        

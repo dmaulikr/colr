@@ -15,6 +15,7 @@
 		5A34E9831BFD4CFA00B15B4D /* ColorTheoryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A34E9821BFD4CFA00B15B4D /* ColorTheoryUITests.swift */; };
 		5A34E9931BFD4D1200B15B4D /* ColorCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A34E9911BFD4D1200B15B4D /* ColorCalculator.swift */; };
 		5A34E9971BFD4D2800B15B4D /* RoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A34E9961BFD4D2800B15B4D /* RoodViewController.swift */; };
+		DF329D071C1BE85B000A0C4F /* GameStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF329D061C1BE85B000A0C4F /* GameStage.swift */; };
 		DFE7AD031BFF9D8A00A74250 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE7AD021BFF9D8A00A74250 /* GameView.swift */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +51,7 @@
 		5A34E9841BFD4CFA00B15B4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5A34E9911BFD4D1200B15B4D /* ColorCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorCalculator.swift; sourceTree = "<group>"; };
 		5A34E9961BFD4D2800B15B4D /* RoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoodViewController.swift; sourceTree = "<group>"; };
+		DF329D061C1BE85B000A0C4F /* GameStage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameStage.swift; sourceTree = "<group>"; };
 		DFE7AD021BFF9D8A00A74250 /* GameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,6 +107,7 @@
 				5A34E9961BFD4D2800B15B4D /* RoodViewController.swift */,
 				5A34E9911BFD4D1200B15B4D /* ColorCalculator.swift */,
 				DFE7AD021BFF9D8A00A74250 /* GameView.swift */,
+				DF329D061C1BE85B000A0C4F /* GameStage.swift */,
 				5A34E9661BFD4CFA00B15B4D /* Main.storyboard */,
 				5A34E9691BFD4CFA00B15B4D /* Assets.xcassets */,
 				5A34E96B1BFD4CFA00B15B4D /* LaunchScreen.storyboard */,
@@ -267,6 +270,7 @@
 				5A34E9931BFD4D1200B15B4D /* ColorCalculator.swift in Sources */,
 				DFE7AD031BFF9D8A00A74250 /* GameView.swift in Sources */,
 				5A34E9631BFD4CFA00B15B4D /* AppDelegate.swift in Sources */,
+				DF329D071C1BE85B000A0C4F /* GameStage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
