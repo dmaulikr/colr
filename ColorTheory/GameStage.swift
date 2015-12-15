@@ -9,33 +9,36 @@
 import Foundation
 import UIKit
 
+//The model for a stage/level.
+
+
 public struct GameStage {
     
+    //stagelevel data
+    
+    //Number of Blocks
     var NumberOfBlocks : Int = 20
     
-    
+    //Block Spacing
     var BlockSpacing : Int = 75
     
-    
+    //Block Size
     var BlockSize : CGFloat = 50
     
+    
+    //Vector of Colors for each corresponding block.
+    //The order of this vector corresponds exactly with the order of the XYPoints vector.
     var ColorVector : [UIColor] = [UIColor]()
     
     
     
     
-    
+    //The first column (the left one) that will keep track of the sum of colors somehow.
     
     var ColumnOne : CGPoint = CGPoint(x: 0, y: 50)
         
 
     
-    //Find a place for this function elsewhere
-    func WithinBoundsOf(Point: CGPoint, AreaPoint: CGPoint, Area: CGPoint) -> Bool
-    {
-        //checks if Point is within the bounds defined by AreaPoint and Area
-        
-        return (((AreaPoint.x < Point.x) && (Point.x < AreaPoint.x + Area.x)) && ((AreaPoint.y < Point.y) && (Point.y < AreaPoint.y + Area.y)))
-    }
+    
     
 }

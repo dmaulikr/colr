@@ -7,12 +7,16 @@
 //
 
 import UIKit
+//No import needed to import Library.swift functions
 
+
+//The controller for ColorTheory.
 
 class RoodViewController: UIViewController, GameViewDataSource {
     
     
-
+    //The instance of a game view. The "window" for our levels.
+    
     @IBOutlet weak var gameView: GameView! {
         didSet {
             gameView.DataSource = self
@@ -24,33 +28,22 @@ class RoodViewController: UIViewController, GameViewDataSource {
         
     }
     
+    
+    //The Model for the game. The GameStage struct holds all data related to the current stage on display. 
+    
     var gameStage = GameStage() {
         didSet {
             UpdateUI()
         }
     }
-
-    
-    var color: UIColor = UIColor.lightGrayColor() {
-        didSet {
-            
-            UpdateUI()
-        }
-    }
     
     
+    //Here is the storage for the touch coordinate last made on the screen.
     
-    //store last touch coordinates
     var touchCoordinates : CGPoint = CGPoint(x: 0, y: 0)
 
     
-    
-    var BlockSpacing : Int = 75 {
-        didSet {
-            UpdateUI()
-        }
-    }
-    
+    //Storage for XYPoints. For now, it stays here, in the Controller.
     //doesn't matter what start value is because of calls in viewDidLoad
     var XYPoints : [CGPoint] = [CGPoint]() {
         didSet {
@@ -63,7 +56,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
     
     
     
-    
+    //Set-up function for initiating gameStage's colorVector with appropriate number of colors.
     //DataSource dependent
     func SetUpColorVector() {
         
@@ -86,7 +79,8 @@ class RoodViewController: UIViewController, GameViewDataSource {
     
     
     
-    
+    //Bool Vector that keeps track of which block is "locked on"
+    //the block being touched on
     
     var OnLock : [Bool] = [Bool]()
     
@@ -136,7 +130,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
     
     
 
-    
+    //called everytime something is dragged
     @IBAction func dragBlock(gesture: UIPanGestureRecognizer) {
         
         let numberOfBlocks = gameStage.NumberOfBlocks
@@ -152,7 +146,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
             
             //If it is within bounds of ColumnOne
         //then color changes
-            if (gameStage.WithinBoundsOf(XYPoints[l], AreaPoint: gameStage.ColumnOne, Area: CGPoint(x: 50, y: 300))) {
+            if (WithinBoundsOf(XYPoints[l], AreaPoint: gameStage.ColumnOne, Area: CGPoint(x: 50, y: 300))) {
                 
                 gameStage.ColorVector[l] = UIColor.darkGrayColor()
                 
@@ -172,9 +166,12 @@ class RoodViewController: UIViewController, GameViewDataSource {
         //print(gameView.ColorVector)
         
         
+        
+        //switch statement for cases: .Ended, .Began, and .Changed
         switch gesture.state {
             
-            //when touch is let go
+            //.Ended
+            //case for when touch leaves the screen
         case .Ended:
             
             for var i = 0; i < numberOfBlocks; i++ {
@@ -186,7 +183,8 @@ class RoodViewController: UIViewController, GameViewDataSource {
             
             
             
-            //first touch
+            //.Began
+            //case for when the finger first touches the screen
         case .Began:
             
             //how much it as changed in the gameView's
@@ -208,7 +206,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 
                 //print(i)
                 //if the touch is within the block
-            if (gameStage.WithinBoundsOf(touchCoordinates, AreaPoint: XYPoints[i], Area: CGPoint(x: blockSize, y: blockSize))) {
+            if (WithinBoundsOf(touchCoordinates, AreaPoint: XYPoints[i], Area: CGPoint(x: blockSize, y: blockSize))) {
                 
                 OnLock[i] = true
                 
@@ -238,7 +236,8 @@ class RoodViewController: UIViewController, GameViewDataSource {
             
             break
             
-            //while being dragged
+            //.Changed
+            //case for while touch is on the screen
         case .Changed:
             
             
@@ -383,7 +382,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
     
     
     //GameViewDataSource Functions
-    
+    //XYPoints lives in the RoodViewController for now.
     
     func XYForGameView(sender: GameView) -> [CGPoint]? {
         

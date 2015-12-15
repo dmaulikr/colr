@@ -9,7 +9,7 @@
 import UIKit
 
 //Delegation
-//
+//View delegates information getters to the controller so it can be handled there.
 protocol GameViewDataSource: class {
     func XYForGameView(sender: GameView) -> [CGPoint]?
     func NumberOfBlocksForGameView(sender: GameView) -> Int?
@@ -18,31 +18,36 @@ protocol GameViewDataSource: class {
     func ColorVectorForGameView(sender: GameView) -> [UIColor]?
 }
 
+//The view for a stage/level.
+
+
 @IBDesignable
 class GameView: UIView {
     
     
     
-    
+    //The true center, using superview's center.
     var Center: CGPoint {
         return convertPoint(center, fromView: superview)
     }
     
-    
+    //If there is an @IBInspectable before a var:
     //IBInspectable values overwrite these
     //They are priority. It will show those values
     //instead of these when you run the game.
     //hit enter when changing the value in the storyboard attribute inspector
     
     
-    @IBInspectable
+    //The view's vector of colors.
+    
     var ColorVector: [UIColor] = [UIColor]() {
         didSet {
             setNeedsDisplay()
         }
     }
     
-    @IBInspectable
+    //The line width of the blocks.
+    
     var lineWidth: CGFloat = 3 {
         didSet {
             setNeedsDisplay()
@@ -52,8 +57,8 @@ class GameView: UIView {
 
     
     
-    
-    //DataSource dependent
+    //The number of blocks.
+    //DataSource dependent.
     var numberOfBlocks: Int = 5 {
         didSet {
             setNeedsDisplay()
@@ -61,6 +66,8 @@ class GameView: UIView {
     }
     
     @IBInspectable
+    //The block size.
+    //DataSource dependent.
     var blockSize : CGFloat = 50 {
         didSet {
             setNeedsDisplay()
@@ -68,6 +75,8 @@ class GameView: UIView {
     }
     
     @IBInspectable
+    //The block spacing.
+    //DataSource dependent.
     var blockSpacing : Int = 500 {
         didSet {
             setNeedsDisplay()
@@ -76,7 +85,7 @@ class GameView: UIView {
     
     
     
-    
+    //Temporary storage for y positions.
     var YPosition : CGFloat = CGFloat(50.0) {
 
         didSet {
@@ -86,7 +95,7 @@ class GameView: UIView {
     }
     
    
-    
+    //Temporary storage for x positions.
     var XPosition : CGFloat = CGFloat(50.0) {
 
         didSet {
@@ -94,7 +103,7 @@ class GameView: UIView {
         }
     }
     
-    
+    //the corner radius of the blocks.
     var CornerRadius: CGFloat {
         return 0
     }
@@ -104,7 +113,7 @@ class GameView: UIView {
     
     
     
-    
+    //Empty rectangle
     var Rectangle : CGRect = CGRect(origin: CGPoint.zero, size: CGSize.zero);
     
     
@@ -119,7 +128,7 @@ class GameView: UIView {
    
     
     
-    
+    //vector of UIBezierPaths
     
     var Paths = [UIBezierPath]() {
         didSet {
@@ -127,8 +136,8 @@ class GameView: UIView {
         }
     }
     
-    
-    //DataSource dependent
+    //XYPoints which comes from XYPoints in the RoodViewController.
+    //DataSource dependent.
     var BlockPoints : [CGPoint] = [CGPoint]() {
         didSet {
             setNeedsDisplay()
@@ -144,11 +153,11 @@ class GameView: UIView {
     
     
     
-    //draws blocks in grid formation
+    //Function that draws blocks in grid formation.
     
     func SetUpBlockPoints() -> [CGPoint] {
         
-        //retrieve block spacing from data source
+        //retrieves block spacing from data source
         blockSpacing = DataSource?.BlockSpacingForGameView(self) ?? 100
         
         var BlockPointsArray : [CGPoint] = [CGPoint]()
@@ -185,6 +194,7 @@ class GameView: UIView {
     
     
     
+    //Function that draws a block.
     
     func DrawBlock(originX: CGFloat, originY: CGFloat, size: CGFloat) -> UIBezierPath {
         
@@ -207,6 +217,7 @@ class GameView: UIView {
         
     }
     
+    //Function that helps draw a squircle. Right now unused.
     
     func Squircle(x: Double) -> Double {
         
@@ -228,7 +239,7 @@ class GameView: UIView {
     
     
     
-    
+    //Function that draws a squircle. Right now unused.
     
     
     func DrawSquircle(posX: Double, posY: Double) -> UIBezierPath {
@@ -310,7 +321,8 @@ class GameView: UIView {
     
     
     
-    //creates an array of Block paths
+    //creates an array of Block paths.
+    
     func ArrangeBlocks(numBlocks: Int)
     {
         //retrieve block points from data source
@@ -377,13 +389,25 @@ class GameView: UIView {
     }
 */
     
+    
+    
+    
+    //Function that sets up the number of blocks according to what DataSource says it should be.
+    
     func SetUpNumberOfBlocks() {
         //retrieve number of blocks from data source
         numberOfBlocks = (DataSource?.NumberOfBlocksForGameView(self))!
     }
     
-    //Drawing
-    //called everytime setNeedsDisplay() is called
+    
+    
+    
+    //Most important function.
+    //Draws.
+    //This is called everytime setNeedsDisplay() is called.
+    //Do not add too much to this function, since it is called so often.
+    //Optimization would be appropriate here.
+    
     override func drawRect(rect: CGRect) {
         
         
@@ -395,17 +419,19 @@ class GameView: UIView {
         
         ArrangeBlocks(numberOfBlocks)
         
-        //retrieve Color Vector from data source
+        //retrieve vector of colors from data source
         ColorVector = (DataSource?.ColorVectorForGameView(self))!
         
         
         //loop through the paths to draw the blocks with appropriate color
         for (index, value) in Paths.enumerate() {
             
-            
+            //sets the color of the block
             ColorVector[index].set()
             print(ColorVector[index])
+            //fill
             value.fill()
+            //stroke
             value.stroke()
         }
         
