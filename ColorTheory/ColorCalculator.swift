@@ -47,7 +47,7 @@ func RYBtoRGB(r:Double, y:Double, b:Double, i:Int) -> Double {
         black[i] * r * b * y) * 255
 }
 
-// Calculate RYB value from amound of each color
+// Calculate RYB value from amount of each color
 func PiecesToRYB(var color:Double, max:Double) -> Double {
     if (color == max) {
         color = 1.0

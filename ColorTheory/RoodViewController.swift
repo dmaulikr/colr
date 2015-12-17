@@ -54,6 +54,9 @@ class RoodViewController: UIViewController, GameViewDataSource {
     
     
     
+    let BlockColor = UIColor(red: 0.38, green: 0.36, blue: 0.39, alpha: 1)
+    
+    
     
     
     //Set-up function for initiating gameStage's colorVector with appropriate number of colors.
@@ -64,7 +67,19 @@ class RoodViewController: UIViewController, GameViewDataSource {
         //append gameStage's color vector with appropriate
         //number of colors
         for var i = 0; i < gameStage.NumberOfBlocks; i++ {
-            gameStage.ColorVector.append(UIColor.lightGrayColor())
+            
+            if (i == 0) {
+                gameStage.ColorVector.append(UIColor(red: 0.45, green: 0.30, blue: 0.34, alpha: 1))
+            }
+            
+            else if (i == 1) {
+                gameStage.ColorVector.append(UIColor(red: 0.57, green: 0.43, blue: 0.46, alpha: 1))
+            }
+            else {
+                gameStage.ColorVector.append(BlockColor)
+            }
+            
+            
         }
         
         
@@ -139,29 +154,14 @@ class RoodViewController: UIViewController, GameViewDataSource {
         
         
         
+        
        
         
-        for var l = 0; l < numberOfBlocks; l++ {
-            
-            
-            //If it is within bounds of ColumnOne
-        //then color changes
-            if (WithinBoundsOf(XYPoints[l], AreaPoint: gameStage.ColumnOne, Area: CGPoint(x: 50, y: 300))) {
-                
-                gameStage.ColorVector[l] = UIColor.darkGrayColor()
-                
-                
-            }
-            //else
-            //change color back to original color
-            else {
-                
-                gameStage.ColorVector[l] = UIColor.lightGrayColor()
-            }
-            
-            
-            
-        }
+       
+        
+        
+        
+        
         
         //print(gameView.ColorVector)
         
@@ -179,7 +179,51 @@ class RoodViewController: UIViewController, GameViewDataSource {
             OnLock[i] = false
                 
                 
+                
+                
+                
             }
+            
+            
+            
+            for var l = 0; l < numberOfBlocks; l++ {
+                
+                let BlockCenter = CGPoint(x: XYPoints[l].x + CGFloat(blockSize/2.0), y: XYPoints[l].y + CGFloat(blockSize/2.0))
+                //If it is within bounds of ColumnOne
+                //then color changes
+                //bounds is larger than the actual ColumnOne
+                if (WithinBoundsOf(BlockCenter, AreaPoint: CGPoint(x: gameStage.ColumnOne.x - 25, y: gameStage.ColumnOne.y - 25), Area: CGPoint(x: 100, y: 450))) {
+                    
+                    //
+                    XYPoints[l] = CGPoint(x: gameStage.ColumnOne.x, y: XYPoints[l].y)
+                    //
+                    gameStage.ColumnOneColor = gameStage.ColorVector[l]
+                    
+                }
+                    //else
+                    //change color back to original color
+                else {
+                    
+                    
+                    if (l == 0) {
+                        gameStage.ColorVector.append(UIColor(red: 0.45, green: 0.30, blue: 0.34, alpha: 1))
+                    }
+                        
+                    else if (l == 1) {
+                        gameStage.ColorVector.append(UIColor(red: 0.55, green: 0.41, blue: 0.44, alpha: 1))
+                    }
+                    else {
+                        gameStage.ColorVector.append(BlockColor)
+                    }
+                    
+                    
+                }
+                
+                
+                
+            }
+            
+            
             
             
             
@@ -357,6 +401,8 @@ class RoodViewController: UIViewController, GameViewDataSource {
         gameView.BlockPoints = gameView.SetUpBlockPoints()
         XYPoints = gameView.SetUpBlockPoints()
         
+
+        
         
         
 
@@ -413,6 +459,18 @@ class RoodViewController: UIViewController, GameViewDataSource {
     func ColorVectorForGameView(sender: GameView) -> [UIColor]? {
         
         return gameStage.ColorVector
+        
+    }
+    
+    func ColumnOneForGameView(sender: GameView) -> CGPoint? {
+        
+        
+        return gameStage.ColumnOne
+    }
+    
+    func ColumnOneColorForGameView(sender: GameView) -> UIColor? {
+        
+        return gameStage.ColumnOneColor
         
     }
 

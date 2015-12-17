@@ -16,6 +16,8 @@ protocol GameViewDataSource: class {
     func BlockSpacingForGameView(sender: GameView) -> Int?
     func BlockSizeForGameView(sender: GameView) -> CGFloat?
     func ColorVectorForGameView(sender: GameView) -> [UIColor]?
+    func ColumnOneForGameView(sender: GameView) -> CGPoint?
+    func ColumnOneColorForGameView(sender: GameView) -> UIColor?
 }
 
 //The view for a stage/level.
@@ -172,7 +174,8 @@ class GameView: UIView {
             //columns
             for var j = 0; j < 3; j++ {
                 
-            BlockPointsArray.append(CGPoint(x: CGFloat(0.0) + CGFloat(j*blockSpacing), y: CGFloat(0.0) + CGFloat(i*blockSpacing)))
+            //TESTING I AND J SWITCHED: BLOCKS = 3
+            BlockPointsArray.append(CGPoint(x: CGFloat(0.0) + CGFloat(i*blockSpacing) + 250, y: CGFloat(0.0) + CGFloat(j*blockSpacing) + 50))
             //[CGPointZero, CGPoint(x: 0, y: 0 + CGFloat(75)), CGPoint(x: 0, y: 0 + CGFloat(2*75))]
                 
             }
@@ -185,7 +188,7 @@ class GameView: UIView {
         }
         
         
-        print(BlockPointsArray)
+        //print(BlockPointsArray)
         
         return BlockPointsArray
     }
@@ -204,6 +207,30 @@ class GameView: UIView {
         Rectangle.origin.y = originY
         Rectangle.size.width = size
         Rectangle.size.height = size
+        
+        let Path = UIBezierPath(roundedRect: Rectangle, cornerRadius: CornerRadius)
+        
+        
+        Path.lineWidth = lineWidth
+        
+        
+        
+        return Path
+        
+        
+    }
+    
+    
+    //Function that draws a column.
+    
+    func DrawColumn(originX: CGFloat, originY: CGFloat, width: CGFloat, height: CGFloat) -> UIBezierPath {
+        
+        
+        
+        Rectangle.origin.x = originX
+        Rectangle.origin.y = originY
+        Rectangle.size.width = width
+        Rectangle.size.height = height
         
         let Path = UIBezierPath(roundedRect: Rectangle, cornerRadius: CornerRadius)
         
@@ -414,7 +441,12 @@ class GameView: UIView {
         //clears array of paths each time setNeedsDisplay is called
         Paths.removeAll()
         
+        //retrieve column one from data source
+        let ColumnOneDraw : CGPoint = (DataSource?.ColumnOneForGameView(self))!
+        let ColumnOneColor : UIColor = (DataSource?.ColumnOneColorForGameView(self))!
         
+        ColumnOneColor.set()
+        DrawColumn(ColumnOneDraw.x, originY: ColumnOneDraw.y, width: 50, height: 400).fill()
 
         
         ArrangeBlocks(numberOfBlocks)
@@ -428,14 +460,17 @@ class GameView: UIView {
             
             //sets the color of the block
             ColorVector[index].set()
-            print(ColorVector[index])
+            //print(ColorVector[index])
             //fill
             value.fill()
             //stroke
             value.stroke()
         }
         
-       
+        
+        
+        
+        
         
         
         

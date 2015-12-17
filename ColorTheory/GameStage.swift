@@ -12,18 +12,22 @@ import UIKit
 //The model for a stage/level.
 
 
-public struct GameStage {
+public class GameStage {
     
     //stagelevel data
     
     //Number of Blocks
-    var NumberOfBlocks : Int = 20
+    var NumberOfBlocks : Int = 3
     
     //Block Spacing
     var BlockSpacing : Int = 75
     
     //Block Size
     var BlockSize : CGFloat = 50
+    
+    //Column One Color
+    var ColumnOneColor : UIColor = UIColor(red: 0.97, green: 0.87, blue: 0.91, alpha: 1)
+    
     
     
     //Vector of Colors for each corresponding block.
@@ -35,9 +39,14 @@ public struct GameStage {
     
     //The first column (the left one) that will keep track of the sum of colors somehow.
     
-    var ColumnOne : CGPoint = CGPoint(x: 0, y: 50)
+    var ColumnOne : CGPoint = CGPoint(x: 50, y: 50)
         
-
+    
+    
+    //XYPoints.append(CGPoint(x: CGFloat(0.0) + CGFloat(j*BlockSpacing), y: CGFloat(0.0) + CGFloat(i*BlockSpacing)))
+    
+    
+    
     
     
     
