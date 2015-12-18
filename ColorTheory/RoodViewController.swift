@@ -100,7 +100,12 @@ class RoodViewController: UIViewController, GameViewDataSource {
     //Bool Vector that keeps track of which block is "locked on"
     //the block being touched on
     
-    var OnLock : [Bool] = [Bool]()
+    var OnLock : [Bool] = [Bool]() {
+        didSet {
+            UpdateUI()
+        }
+        
+    }
     
     
     //Bool Vector that keeps track of which block has been "picked up"
@@ -280,11 +285,12 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 print("BEGAN")
                 
                 
+               
                 //TESTING
                 
                 
                 //All that is needed to add a new block.
-                
+                print("Added through began.")
                 //Adds a new XYPoint to XYPoints
                 XYPoints.append(XYPoints[i])
                 //Adds a new color to the color vector.
@@ -339,7 +345,8 @@ class RoodViewController: UIViewController, GameViewDataSource {
         case .Changed:
             
             //print("CHANGED")
-            
+            print(gameStage.NumberOfBlocks)
+            print(numberOfBlocks)
             
             //print("CHANGED \(OnLock)")
             
@@ -374,17 +381,18 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 gesture.setTranslation(CGPointZero, inView: gameView)
                 
                 
-                
+                //print("Came from within.")
                 
             
             
             }
             
                 //else if block isn't set to lock yet, but user dragged over the block
-            else if (WithinBoundsOf(LatestTouchCoordinate, AreaPoint: XYPoints[i], Area: CGPoint(x: blockSize, y: blockSize)))
+            else if (WithinBoundsOf(LatestTouchCoordinate, AreaPoint: XYPoints[i], Area: CGPoint(x: blockSize, y: blockSize)) && !WithinBoundsOf(touchCoordinates, AreaPoint: XYPoints[i], Area: CGPoint(x: blockSize, y: blockSize)))
             {
                 
-                OnLock[i] = true
+                
+                    OnLock[i] = true
                 
                 
                 //reset translation to 0, 0
@@ -393,7 +401,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 //Only adds a new block when the touch right before is outside the block, and has been dragged inside the block (when the block wasn't locked on before)
                 
                 //All that is needed to add a new block.
-                
+                //print("Added through change.")
                 //Adds a new XYPoint to XYPoints
                 XYPoints.append(XYPoints[i])
                 //Adds a new color to the color vector.
@@ -402,6 +410,8 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 OnLock.append(false)
                 //Increments the number of blocks.
                 gameStage.NumberOfBlocks++
+                
+                
                 
                 
                 
