@@ -448,7 +448,10 @@ class GameView: UIView {
         ColumnOneColor.set()
         DrawColumn(ColumnOneDraw.x, originY: ColumnOneDraw.y, width: 50, height: 400).fill()
 
+        //receive latest number of blocks
+        SetUpNumberOfBlocks()
         
+        //make new paths according to latest number of blocks
         ArrangeBlocks(numberOfBlocks)
         
         //retrieve vector of colors from data source

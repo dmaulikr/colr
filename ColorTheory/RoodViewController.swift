@@ -102,6 +102,8 @@ class RoodViewController: UIViewController, GameViewDataSource {
     
     var OnLock : [Bool] = [Bool]()
     
+    
+    //Bool Vector that keeps track of which block has been "picked up"
     //var PickUp : [Bool] = [Bool]()
     
     func SetUpOnLockVector() -> [Bool] {
@@ -121,7 +123,9 @@ class RoodViewController: UIViewController, GameViewDataSource {
         
         var PickUpVector = [Bool]()
         
-        for var i = 0; i < NumberOfBlocks; i++ {
+        
+        let numberOfBlocks = gameStage.NumberOfBlocks
+        for var i = 0; i < numberOfBlocks; i++ {
             PickUpVector.append(false)
         }
         
@@ -147,8 +151,9 @@ class RoodViewController: UIViewController, GameViewDataSource {
     
     
     
-
-    //called everytime something is dragged
+    //UIPanGesture called dragBlock.
+    //Called everytime something is dragged.
+    //Needs optimization.
     @IBAction func dragBlock(gesture: UIPanGestureRecognizer) {
         
         let numberOfBlocks = gameStage.NumberOfBlocks
@@ -188,8 +193,10 @@ class RoodViewController: UIViewController, GameViewDataSource {
             }
             
             
+            //if within column bounds, then make column capture color and delete block
+            var numOfBlocks = numberOfBlocks
             
-            for var l = 0; l < numberOfBlocks; l++ {
+            for var l = 0; l < numOfBlocks; l++ {
                 
                 let BlockCenter = CGPoint(x: XYPoints[l].x + CGFloat(blockSize/2.0), y: XYPoints[l].y + CGFloat(blockSize/2.0))
                 //If it is within bounds of ColumnOne
@@ -198,27 +205,36 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 if (WithinBoundsOf(BlockCenter, AreaPoint: CGPoint(x: gameStage.ColumnOne.x - 25, y: gameStage.ColumnOne.y - 25), Area: CGPoint(x: 100, y: 450))) {
                     
                     //
-                    XYPoints[l] = CGPoint(x: gameStage.ColumnOne.x, y: XYPoints[l].y)
+                    //XYPoints[l] = CGPoint(x: gameStage.ColumnOne.x, y: XYPoints[l].y)
                     //
                     gameStage.ColumnOneColor = gameStage.ColorVector[l]
                     
+                    
+                    
+                    //All that is needed to delete a block.
+                    
+                    //Removes the XYPoint associated with the block that is being absorbed into the column.
+                    XYPoints.removeAtIndex(l)
+                    //Removes the corresponding color in the color vector.
+                    gameStage.ColorVector.removeAtIndex(l)
+                    //Removes corresponding bool in the OnLock vector.
+                    OnLock.removeAtIndex(l)
+                    //Decrement number of blocks.
+                    gameStage.NumberOfBlocks--
+                    
+                    //Decrement the numOfBlocks of this for loop so 
+                    //that Array Index is not out of range
+                    numOfBlocks--
+                    
+                    
+                    
+                    
                 }
                     //else
-                    //change color back to original color
+                    
                 else {
                     
-                    
-                    if (l == 0) {
-                        gameStage.ColorVector.append(UIColor(red: 0.45, green: 0.30, blue: 0.34, alpha: 1))
-                    }
-                        
-                    else if (l == 1) {
-                        gameStage.ColorVector.append(UIColor(red: 0.55, green: 0.41, blue: 0.44, alpha: 1))
-                    }
-                    else {
-                        gameStage.ColorVector.append(BlockColor)
-                    }
-                    
+                   
                     
                 }
                 
@@ -261,26 +277,42 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 
                 
                 
-                
+                print("BEGAN")
                 
                 
                 //TESTING
                 
-                XYPoints.append(XYPoints[i])
-                gameStage.ColorVector.append(gameStage.ColorVector[i])
-                OnLock.append(false)
                 
-                UpdateUI()
+                //All that is needed to add a new block.
+                
+                //Adds a new XYPoint to XYPoints
+                XYPoints.append(XYPoints[i])
+                //Adds a new color to the color vector.
+                gameStage.ColorVector.append(gameStage.ColorVector[i])
+                //Adds a new OnLock bool.
+                OnLock.append(false)
+                //Increments the number of blocks.
+                gameStage.NumberOfBlocks++
+                
+                
+                
+                //numOfBlocks++
+                
+                //UpdateUI()
                 
                 //print(gameStage.ColorVector)
                 //print("Changed \(OnLock)")
-                print(XYPoints)
+                
                 
                 
                 
                 XYPoints[i].x += Xdrag
                 XYPoints[i].y += Ydrag
                 
+                //print(XYPoints)
+                
+                print(gameStage.NumberOfBlocks)
+                print(numberOfBlocks)
                 
                 //print(gameView.XPosition)
                 //print(gameView.YPosition)
@@ -306,61 +338,76 @@ class RoodViewController: UIViewController, GameViewDataSource {
             //case for while touch is on the screen
         case .Changed:
             
-            
+            //print("CHANGED")
             
             
             //print("CHANGED \(OnLock)")
             
+            let translation = gesture.translationInView(gameView)
             
             
+            //print(XYPoints)
             //for each block
             for var i = 0; i < numberOfBlocks; i++ {
                 
+            //while looping through blocks, get the latest touch coordinate (safer 
+            //than getting it outside of the loop?)
+            let LatestTouchCoordinate = CGPoint(x: touchCoordinates.x + translation.x, y: touchCoordinates.y + translation.y)
                 
-                
+            //print(translation)
             //if a block is already locked on (has a finger on it)
-            
+            //either by having the first touch placed over it,
+            //or by dragging finger from empty space over to the top of the block.
             
             if (OnLock[i] == true)
             {
-                
+                //print("Locked On: \(translation)")
                 let translation = gesture.translationInView(gameView)
                 let Xdrag = translation.x
                 let Ydrag = translation.y
                 XYPoints[i].x += Xdrag
                 XYPoints[i].y += Ydrag
                 
+                OnLock[i] = true
                 
                 //makes it incremental
                 gesture.setTranslation(CGPointZero, inView: gameView)
+                
+                
+                
+                
             
             
             }
+            
+                //else if block isn't set to lock yet, but user dragged over the block
+            else if (WithinBoundsOf(LatestTouchCoordinate, AreaPoint: XYPoints[i], Area: CGPoint(x: blockSize, y: blockSize)))
+            {
                 
-                /*
-                
-                //if the "dragging" touch is within the block
-            else if (XYPoints[i].x < touchCoordinates.x && touchCoordinates.x < XYPoints[i].x + gameView.blockSize && XYPoints[i].y < touchCoordinates.y && touchCoordinates.y < XYPoints[i].y + gameView.blockSize) {
-                
-                
-                
-                    let translation = gesture.translationInView(gameView)
-                    let Xdrag = translation.x
-                    let Ydrag = translation.y
-                    XYPoints[i].x += Xdrag
-                    XYPoints[i].y += Ydrag
+                OnLock[i] = true
                 
                 
-                    OnLock[i] = true
-                    
-                    //makes it incremental
-                    gesture.setTranslation(CGPointZero, inView: gameView)
-                    
+                //reset translation to 0, 0
+                gesture.setTranslation(CGPointZero, inView: gameView)
+                
+                //Only adds a new block when the touch right before is outside the block, and has been dragged inside the block (when the block wasn't locked on before)
+                
+                //All that is needed to add a new block.
+                
+                //Adds a new XYPoint to XYPoints
+                XYPoints.append(XYPoints[i])
+                //Adds a new color to the color vector.
+                gameStage.ColorVector.append(gameStage.ColorVector[i])
+                //Adds a new OnLock bool.
+                OnLock.append(false)
+                //Increments the number of blocks.
+                gameStage.NumberOfBlocks++
+                
+                
                 
                 }
-
-
-            */
+                
+                
             
                 
                 
