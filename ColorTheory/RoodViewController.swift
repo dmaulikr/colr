@@ -43,6 +43,9 @@ class RoodViewController: UIViewController, GameViewDataSource {
     var touchCoordinates : CGPoint = CGPoint(x: 0, y: 0)
 
     
+    
+    
+
     //Storage for XYPoints. For now, it stays here, in the Controller.
     //doesn't matter what start value is because of calls in viewDidLoad
     var XYPoints : [CGPoint] = [CGPoint]() {
@@ -252,9 +255,28 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 //if the touch is within the block
             if (WithinBoundsOf(touchCoordinates, AreaPoint: XYPoints[i], Area: CGPoint(x: blockSize, y: blockSize))) {
                 
+                
+                
                 OnLock[i] = true
                 
-                //print("Changed \(OnLock)");
+                
+                
+                
+                
+                
+                //TESTING
+                
+                XYPoints.append(XYPoints[i])
+                gameStage.ColorVector.append(gameStage.ColorVector[i])
+                OnLock.append(false)
+                
+                UpdateUI()
+                
+                //print(gameStage.ColorVector)
+                //print("Changed \(OnLock)")
+                print(XYPoints)
+                
+                
                 
                 XYPoints[i].x += Xdrag
                 XYPoints[i].y += Ydrag
@@ -418,6 +440,8 @@ class RoodViewController: UIViewController, GameViewDataSource {
         
     }
     
+    
+    //Updates the view.
     func UpdateUI() {
         
         gameView?.setNeedsDisplay()
