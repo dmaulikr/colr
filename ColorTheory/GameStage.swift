@@ -28,14 +28,14 @@ public class GameStage {
     //Column One Color
     var ColumnOneColor : UIColor = UIColor(red: 0.97, green: 0.87, blue: 0.91, alpha: 1)
     
-    
+    var x = fetchData()
     
     //Vector of Colors for each corresponding block.
     //The order of this vector corresponds exactly with the order of the XYPoints vector.
     var ColorVector : [UIColor] = [UIColor]()
     
     
-    
+
     
     //The first column (the left one) that will keep track of the sum of colors somehow.
     

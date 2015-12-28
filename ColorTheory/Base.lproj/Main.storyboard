@@ -52,6 +52,7 @@
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="3Wc-3d-QZe" appends="YES" id="PQt-Kg-C26"/>
+                                    <outletCollection property="gestureRecognizers" destination="moq-30-ZpO" appends="YES" id="gPU-uP-wg5"/>
                                 </connections>
                             </view>
                         </subviews>
@@ -79,6 +80,11 @@
                         <action selector="dragBlock:" destination="BYZ-38-t0r" id="r0w-Dt-kuu"/>
                     </connections>
                 </panGestureRecognizer>
+                <tapGestureRecognizer id="moq-30-ZpO">
+                    <connections>
+                        <action selector="clearColumnColor:" destination="BYZ-38-t0r" id="SyA-Hj-pUW"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="17" y="281"/>
         </scene>

@@ -12,7 +12,11 @@ import UIKit
 
 //The controller for ColorTheory.
 
+
+
 class RoodViewController: UIViewController, GameViewDataSource {
+    
+
     
     
     //The instance of a game view. The "window" for our levels.
@@ -55,9 +59,15 @@ class RoodViewController: UIViewController, GameViewDataSource {
     }
     
     
+    //The previous Color.
+    //regularly updated.
+    var PreviousColor : UIColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
     
     
-    let BlockColor = UIColor(red: 0.38, green: 0.36, blue: 0.39, alpha: 1)
+    //Starting Block Colors.
+    let RedColor = UIColor(red: 0.933, green: 0.247, blue: 0, alpha: 1)
+    let YellowColor = UIColor(red: 0.964, green: 0.957, blue: 0.003, alpha: 1)
+    let BlueColor = UIColor(red: 0, green: 0.054, blue: 0.6, alpha: 1)
     
     
     
@@ -72,14 +82,14 @@ class RoodViewController: UIViewController, GameViewDataSource {
         for var i = 0; i < gameStage.NumberOfBlocks; i++ {
             
             if (i == 0) {
-                gameStage.ColorVector.append(UIColor(red: 0.45, green: 0.30, blue: 0.34, alpha: 1))
+                gameStage.ColorVector.append(RedColor)
             }
             
             else if (i == 1) {
-                gameStage.ColorVector.append(UIColor(red: 0.57, green: 0.43, blue: 0.46, alpha: 1))
+                gameStage.ColorVector.append(YellowColor)
             }
             else {
-                gameStage.ColorVector.append(BlockColor)
+                gameStage.ColorVector.append(BlueColor)
             }
             
             
@@ -88,13 +98,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
         
     }
     
-    
-    
-    
-    
-    
-    
-    
+
     
     
     //Bool Vector that keeps track of which block is "locked on"
@@ -108,49 +112,23 @@ class RoodViewController: UIViewController, GameViewDataSource {
     }
     
     
-    //Bool Vector that keeps track of which block has been "picked up"
-    //var PickUp : [Bool] = [Bool]()
-    
+    //Setup function for OnLockVector
+    //gets called in ViewDidLoad
     func SetUpOnLockVector() -> [Bool] {
         
         var OnLockVector = [Bool]()
         
         for var i = 0; i < gameStage.NumberOfBlocks; i++ {
+            
             OnLockVector.append(false)
+            
         }
         
         return OnLockVector
         
     }
     
-    /*
-    func SetUpPickUpVector() -> [Bool]{
-        
-        var PickUpVector = [Bool]()
-        
-        
-        let numberOfBlocks = gameStage.NumberOfBlocks
-        for var i = 0; i < numberOfBlocks; i++ {
-            PickUpVector.append(false)
-        }
-        
-        return PickUpVector
-        
-    }
-    */
     
-    
-    
-    /*
-    private struct Constants {
-        static let GestureScale: CGFloat = 1
-    }
-    */
-    
-    //if touch is within block validation
-    //so that while holding after touching within the block
-    //the dragging is valid, even if the finger location is
-    //outside the block sometimes
     
     
     
@@ -166,17 +144,19 @@ class RoodViewController: UIViewController, GameViewDataSource {
         let blockSize = gameStage.BlockSize
         
         
-        
-        
-       
+        print("PANNED")
         
        
         
+       
         
         
         
         
-        //print(gameView.ColorVector)
+        
+        print(gameView.ColorVector.count)
+        print(XYPoints.count)
+        print(OnLock.count)
         
         
         
@@ -206,13 +186,52 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 let BlockCenter = CGPoint(x: XYPoints[l].x + CGFloat(blockSize/2.0), y: XYPoints[l].y + CGFloat(blockSize/2.0))
                 //If it is within bounds of ColumnOne
                 //then color changes
-                //bounds is larger than the actual ColumnOne
+                //(these bounds are larger than the actual ColumnOne drawn)
                 if (WithinBoundsOf(BlockCenter, AreaPoint: CGPoint(x: gameStage.ColumnOne.x - 25, y: gameStage.ColumnOne.y - 25), Area: CGPoint(x: 100, y: 450))) {
                     
-                    //
-                    //XYPoints[l] = CGPoint(x: gameStage.ColumnOne.x, y: XYPoints[l].y)
-                    //
-                    gameStage.ColumnOneColor = gameStage.ColorVector[l]
+                    
+                    
+                    
+                    //Here is where the mixing of colors occurs. 
+                    //Colors are mixed using CMYK addition.
+                    //The final color depends on the newly added one and the previous one.
+                    //The final color becomes the previous color in the end.
+                    
+                    
+                    //set the color of the block that was just added to the columnOne bounds to NewColor)
+                    let NewColor : UIColor = gameStage.ColorVector[l]
+                    
+                    //Extract the RGB Components of this new color)
+                    let NewColorComponents = NewColor.components
+                    
+                    //Calculate CMYK values using RGB to CMYK function
+                    let (C, M, Y, K) = RGBToCMYK(NewColorComponents.red, g: NewColorComponents.green, b: NewColorComponents.blue)
+                    
+                    //get PreviousColor RGB Components
+                    let PreviousColorComponents = PreviousColor.components
+                    
+                    
+                    //Calculate CMYK values of PreviousColor
+                    let (C2, M2, Y2, K2) = RGBToCMYK(PreviousColorComponents.red, g: PreviousColorComponents.green, b: PreviousColorComponents.blue)
+                    
+                    
+                    //Calculate RGB values using MixColors function
+                    let (r, g, b) = MixColors(C, m1: M, y1: Y, k1: K, c2: C2, m2: M2, y2: Y2, k2: K2)
+                    
+                    
+                    //Set ColumnOne's color to this final result
+                    gameStage.ColumnOneColor = UIColor(red: r, green: g, blue: b, alpha: 1)
+                    
+                    //Set PreviousColor to this final result
+                    PreviousColor = UIColor(red: r, green: g, blue: b, alpha: 1)
+                    
+                    
+                    print(r, g, b)
+                    
+                    UpdateUI()
+                    
+                    
+                    //Delete the block that was just dragged into the column area.
                     
                     
                     
@@ -235,7 +254,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
                     
                     
                 }
-                    //else
+                    
                     
                 else {
                     
@@ -262,7 +281,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
             let Ydrag = translation.y
             
             
-            //print("BEGAN")
+            
             
             
             
@@ -365,6 +384,8 @@ class RoodViewController: UIViewController, GameViewDataSource {
             //if a block is already locked on (has a finger on it)
             //either by having the first touch placed over it,
             //or by dragging finger from empty space over to the top of the block.
+                
+                
             
             if (OnLock[i] == true)
             {
@@ -429,6 +450,36 @@ class RoodViewController: UIViewController, GameViewDataSource {
     
     
     
+    @IBAction func clearColumnColor(gesture: UITapGestureRecognizer) {
+        
+        
+        print("TAPPED")
+        //print(ColumnOneColorVector)
+        print(touchCoordinates)
+        
+        switch gesture.state {
+            
+        case .Began:
+            fallthrough
+        case .Changed:
+            fallthrough
+        case .Ended:
+            if (WithinBoundsOf(touchCoordinates, AreaPoint: CGPoint(x: 0, y: 0), Area: CGPoint(x: 250, y: 900))){
+                
+                
+                //Set column color to white
+                
+                gameStage.ColumnOneColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
+                UpdateUI()
+            }
+            
+            
+            
+        default: break
+        }
+    }
+    
+    
     //detects finger touch location
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if let touch = touches.first {
@@ -439,18 +490,6 @@ class RoodViewController: UIViewController, GameViewDataSource {
     
     
     
-    
-    
-    
-
-    /*
-    struct PathNames {
-        static let Block1 = "Block1"
-        static let Block2 = "Block2"
-        static let Block3 = "Block3"
-    }
-    
-    */
     
     
     
@@ -555,4 +594,25 @@ class RoodViewController: UIViewController, GameViewDataSource {
         
     }
 
+}
+
+
+
+
+
+
+
+
+
+
+
+//Needed for extracting the components of a color
+//uses the getRed function to do so...
+
+extension UIColor {
+    var components:(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+        var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        return (r,g,b,a)
+    }
 }

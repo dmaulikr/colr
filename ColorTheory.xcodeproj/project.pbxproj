@@ -17,6 +17,7 @@
 		5A34E9971BFD4D2800B15B4D /* RoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A34E9961BFD4D2800B15B4D /* RoodViewController.swift */; };
 		DF0A25931C20ADE200C4826C /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0A25921C20ADE200C4826C /* Library.swift */; };
 		DF329D071C1BE85B000A0C4F /* GameStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF329D061C1BE85B000A0C4F /* GameStage.swift */; };
+		DFB537F61C286F29000EF09B /* MunsellColorCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFB537F51C286F29000EF09B /* MunsellColorCalculator.swift */; };
 		DFE7AD031BFF9D8A00A74250 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE7AD021BFF9D8A00A74250 /* GameView.swift */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,7 @@
 		5A34E9961BFD4D2800B15B4D /* RoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoodViewController.swift; sourceTree = "<group>"; };
 		DF0A25921C20ADE200C4826C /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		DF329D061C1BE85B000A0C4F /* GameStage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameStage.swift; sourceTree = "<group>"; };
+		DFB537F51C286F29000EF09B /* MunsellColorCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MunsellColorCalculator.swift; sourceTree = "<group>"; };
 		DFE7AD021BFF9D8A00A74250 /* GameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,6 +113,7 @@
 				DFE7AD021BFF9D8A00A74250 /* GameView.swift */,
 				DF329D061C1BE85B000A0C4F /* GameStage.swift */,
 				DF0A25921C20ADE200C4826C /* Library.swift */,
+				DFB537F51C286F29000EF09B /* MunsellColorCalculator.swift */,
 				5A34E9661BFD4CFA00B15B4D /* Main.storyboard */,
 				5A34E9691BFD4CFA00B15B4D /* Assets.xcassets */,
 				5A34E96B1BFD4CFA00B15B4D /* LaunchScreen.storyboard */,
@@ -199,7 +202,7 @@
 		5A34E9571BFD4CFA00B15B4D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Singulariti;
 				TargetAttributes = {
@@ -275,6 +278,7 @@
 				5A34E9631BFD4CFA00B15B4D /* AppDelegate.swift in Sources */,
 				DF329D071C1BE85B000A0C4F /* GameStage.swift in Sources */,
 				DF0A25931C20ADE200C4826C /* Library.swift in Sources */,
+				DFB537F61C286F29000EF09B /* MunsellColorCalculator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,15 +419,18 @@
 		5A34E9881BFD4CFA00B15B4D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				HEADER_SEARCH_PATHS = /usr/bin/python;
 				INFOPLIST_FILE = ColorTheory/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Singulariti.ColorTheory;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -431,15 +438,18 @@
 		5A34E9891BFD4CFA00B15B4D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				HEADER_SEARCH_PATHS = /usr/bin/python;
 				INFOPLIST_FILE = ColorTheory/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Singulariti.ColorTheory;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Release;
 		};
