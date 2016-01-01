@@ -11,7 +11,7 @@ import Foundation
 
 
 //Reads Munsell Color Data from a URL.
-
+/*
 func fetchData() //fetching and loading image
 {
     if let url = NSURL(string: "http://www.cis.rit.edu/research/mcsl2/online/munsell_data/all.dat") {
@@ -75,6 +75,12 @@ func parse_hue() {
     
     
 }
+
+*/
+
+
+
+
 
 /*
 import math

@@ -20,15 +20,15 @@ public class GameStage {
     var NumberOfBlocks : Int = 3
     
     //Block Spacing
-    var BlockSpacing : Int = 75
+    var BlockSpacing : Int = 70
     
     //Block Size
     var BlockSize : CGFloat = 50
     
     //Column One Color
-    var ColumnOneColor : UIColor = UIColor(red: 0.97, green: 0.87, blue: 0.91, alpha: 1)
+    var ColumnOneColor : UIColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
     
-    var x = fetchData()
+    //var x = fetchData()
     
     //Vector of Colors for each corresponding block.
     //The order of this vector corresponds exactly with the order of the XYPoints vector.

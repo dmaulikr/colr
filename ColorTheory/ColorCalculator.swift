@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-
+/*
 // calculate max of 3 floating point values
 func calculateMax(r:Double, y:Double, b:Double) -> Double {
     var max = r
@@ -84,6 +84,7 @@ func colorCalculator(redCount : Double, yellowCount : Double, blueCount : Double
     return (RGB_Red, RGB_Green, RGB_Blue)
 }
 
+*/
 
 //Mixes two sets of CMYK values by adding them and dividing them by the largest number
 func MixColors(c1: CGFloat, m1: CGFloat, y1 : CGFloat, k1: CGFloat, c2: CGFloat, m2: CGFloat, y2 : CGFloat, k2: CGFloat) -> (r: CGFloat, g: CGFloat, b : CGFloat) {

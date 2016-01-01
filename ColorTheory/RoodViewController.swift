@@ -61,13 +61,13 @@ class RoodViewController: UIViewController, GameViewDataSource {
     
     //The previous Color.
     //regularly updated.
-    var PreviousColor : UIColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
+    var PreviousColor : UIColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
     
     
     //Starting Block Colors.
-    let RedColor = UIColor(red: 0.933, green: 0.247, blue: 0, alpha: 1)
-    let YellowColor = UIColor(red: 0.964, green: 0.957, blue: 0.003, alpha: 1)
-    let BlueColor = UIColor(red: 0, green: 0.054, blue: 0.6, alpha: 1)
+    let RedColor = UIColor(red: 0.933, green: 0.147, blue: 0.32, alpha: 1)
+    let YellowColor = UIColor(red: 0.964, green: 0.957, blue: 0.002, alpha: 1)
+    let BlueColor = UIColor(red: 0.454, green: 0.454, blue: 0.8, alpha: 1)
     
     
     
@@ -144,7 +144,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
         let blockSize = gameStage.BlockSize
         
         
-        print("PANNED")
+        //print("PANNED")
         
        
         
@@ -154,9 +154,9 @@ class RoodViewController: UIViewController, GameViewDataSource {
         
         
         
-        print(gameView.ColorVector.count)
-        print(XYPoints.count)
-        print(OnLock.count)
+        //print(gameView.ColorVector.count)
+        //print(XYPoints.count)
+        //print(OnLock.count)
         
         
         
@@ -226,7 +226,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
                     PreviousColor = UIColor(red: r, green: g, blue: b, alpha: 1)
                     
                     
-                    print(r, g, b)
+                    //print(r, g, b)
                     
                     UpdateUI()
                     
@@ -301,7 +301,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 
                 
                 
-                print("BEGAN")
+                //print("BEGAN")
                 
                 
                
@@ -470,6 +470,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 //Set column color to white
                 
                 gameStage.ColumnOneColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
+                PreviousColor = gameStage.ColumnOneColor
                 UpdateUI()
             }
             
