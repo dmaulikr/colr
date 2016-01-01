@@ -1,4 +1,4 @@
-# ColorTheory
+# colr
 
 **Even when the senses give the lead thou see'st reason hath wings too short.**
 
