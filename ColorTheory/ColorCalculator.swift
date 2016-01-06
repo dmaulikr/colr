@@ -94,12 +94,14 @@ func MixColors(c1: CGFloat, m1: CGFloat, y1 : CGFloat, k1: CGFloat, c2: CGFloat,
     let y : CGFloat = y1 + y2
     let k : CGFloat = k1 + k2
     
-    let divider = max(c, m, y, k)
+    let divider = 1.1 * max(c, m, y, k)
     
     let C = c/divider
     let M = m/divider
     let Y = y/divider
-    let K = k/divider
+    let K = k/(1.2 * divider)
+    
+    
     
     
     

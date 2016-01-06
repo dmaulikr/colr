@@ -13,11 +13,19 @@ import UIKit
 protocol GameViewDataSource: class {
     func XYForGameView(sender: GameView) -> [CGPoint]?
     func NumberOfBlocksForGameView(sender: GameView) -> Int?
-    func BlockSpacingForGameView(sender: GameView) -> Int?
+    func BlockSpacingForGameView(sender: GameView) -> CGFloat?
     func BlockSizeForGameView(sender: GameView) -> CGFloat?
     func ColorVectorForGameView(sender: GameView) -> [UIColor]?
-    func ColumnOneForGameView(sender: GameView) -> CGPoint?
+    
+    //Columns
+    func ColumnOnePositionForGameView(sender: GameView) -> CGPoint?
     func ColumnOneColorForGameView(sender: GameView) -> UIColor?
+    func ColumnTwoPositionForGameView(sender: GameView) -> CGPoint?
+    func ColumnTwoColorForGameView(sender: GameView) -> UIColor?
+    func ColumnThreePositionForGameView(sender: GameView) -> CGPoint?
+    func ColumnThreeColorForGameView(sender: GameView) -> UIColor?
+    
+    
 }
 
 //The view for a stage/level.
@@ -79,7 +87,7 @@ class GameView: UIView {
     @IBInspectable
     //The block spacing.
     //DataSource dependent.
-    var blockSpacing : Int = 500 {
+    var blockSpacing : CGFloat = 500 {
         didSet {
             setNeedsDisplay()
         }
@@ -161,9 +169,17 @@ class GameView: UIView {
         
         //retrieves block spacing from data source
         blockSpacing = DataSource?.BlockSpacingForGameView(self) ?? 100
+        blockSize = DataSource?.BlockSizeForGameView(self) ?? 50
         
         var BlockPointsArray : [CGPoint] = [CGPoint]()
         
+        
+        //on X
+        let CenteringFormat : CGFloat = frame.size.width/6 - blockSize/2
+        
+        let GridBlockHeight : CGFloat = blockSpacing + blockSize
+        
+        let TopMargin : CGFloat = 25
         
         var i: Int
         
@@ -174,9 +190,11 @@ class GameView: UIView {
             //columns
             for var j = 0; j < 3; j++ {
                 
-            //TESTING I AND J SWITCHED: BLOCKS = 3
-            BlockPointsArray.append(CGPoint(x: CGFloat(0.0) + CGFloat(i*blockSpacing) + 250, y: CGFloat(0.0) + CGFloat(j*blockSpacing) + 50))
-            //[CGPointZero, CGPoint(x: 0, y: 0 + CGFloat(75)), CGPoint(x: 0, y: 0 + CGFloat(2*75))]
+                let XWidth = (CGFloat(j)*(bounds.size.width/3))
+                
+            //Arrangement using starting points.
+            BlockPointsArray.append(CGPoint(x:  XWidth + CenteringFormat, y: CGFloat(i)*GridBlockHeight + TopMargin))
+            
                 
             }
         }
@@ -184,7 +202,7 @@ class GameView: UIView {
         //leftovers
         for var k = 0; k < numberOfBlocks % 3; k++ {
             
-            BlockPointsArray.append(CGPoint(x: CGFloat(0.0) + CGFloat(k*blockSpacing), y: CGFloat(0.0) + CGFloat(i*blockSpacing)))
+            BlockPointsArray.append(CGPoint(x: CGFloat(k*Int(blockSpacing)), y: CGFloat(i*Int(blockSpacing))))
         }
         
         
@@ -245,7 +263,7 @@ class GameView: UIView {
     }
     
     //Function that helps draw a squircle. Right now unused.
-    
+    /*
     func Squircle(x: Double) -> Double {
         
         //Wolfram: (6,000,000- x^4)^(1/4)
@@ -263,12 +281,12 @@ class GameView: UIView {
         return y6
         
     }
-    
+    */
     
     
     //Function that draws a squircle. Right now unused.
     
-    
+    /*
     func DrawSquircle(posX: Double, posY: Double) -> UIBezierPath {
         
         let Path : UIBezierPath = UIBezierPath()
@@ -345,7 +363,7 @@ class GameView: UIView {
         return Path
     }
     
-    
+    */
     
     
     //creates an array of Block paths.
@@ -442,11 +460,53 @@ class GameView: UIView {
         Paths.removeAll()
         
         //retrieve column one from data source
-        let ColumnOneDraw : CGPoint = (DataSource?.ColumnOneForGameView(self))!
+        let ColumnOneDraw : CGPoint = (DataSource?.ColumnOnePositionForGameView(self))!
         let ColumnOneColor : UIColor = (DataSource?.ColumnOneColorForGameView(self))!
         
+        let ColumnTwoDraw : CGPoint = (DataSource?.ColumnTwoPositionForGameView(self))!
+        let ColumnTwoColor : UIColor = (DataSource?.ColumnTwoColorForGameView(self))!
+        
+        let ColumnThreeDraw : CGPoint = (DataSource?.ColumnThreePositionForGameView(self))!
+        let ColumnThreeColor : UIColor = (DataSource?.ColumnThreeColorForGameView(self))!
+        
+        
+        blockSize = (DataSource?.BlockSizeForGameView(self)) ?? 50
+        
         ColumnOneColor.set()
-        DrawColumn(ColumnOneDraw.x, originY: ColumnOneDraw.y, width: 50, height: 400).fill()
+        DrawColumn(ColumnOneDraw.x, originY: ColumnOneDraw.y, width: blockSize, height: 500).fill()
+        
+        ColumnTwoColor.set()
+        DrawColumn(ColumnTwoDraw.x, originY: ColumnTwoDraw.y, width: blockSize, height: 500).fill()
+        
+        ColumnThreeColor.set()
+        DrawColumn(ColumnThreeDraw.x, originY: ColumnThreeDraw.y, width: blockSize, height: 500).fill()
+        
+        
+        
+        let BGColor1 = UIColor(red: 0.91, green: 0.71, blue: 0.81, alpha: 0.9)
+        let BGColor2 = UIColor(red: 0.58, green: 0.76, blue: 0.79, alpha: 0.9)
+        let BGColor3 = UIColor(red: 0.65, green: 0.81, blue: 0.86, alpha: 0.9)
+        
+        BGColor1.set()
+        let bg1 = DrawColumn(0, originY: 150, width: self.bounds.size.width/3, height: self.bounds.size.height)
+        
+        bg1.fill()
+        
+        
+        BGColor2.set()
+        let bg2 = DrawColumn((self.bounds.size.width/3), originY: 150, width: self.bounds.size.width/3, height: self.bounds.size.height)
+        
+        bg2.fill()
+        
+        BGColor3.set()
+        let bg3 = DrawColumn(2*(self.bounds.size.width/3), originY: 150, width: self.bounds.size.width/3, height: self.bounds.size.height)
+        
+        bg3.fill()
+        
+        //print(ColumnOneDraw)
+        //print(ColumnTwoDraw)
+        //print(ColumnThreeDraw)
+        
 
         //receive latest number of blocks
         SetUpNumberOfBlocks()

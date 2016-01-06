@@ -16,17 +16,29 @@ public class GameStage {
     
     //stagelevel data
     
+    //ColorBuffer
+    var ColorMemory : Int = 4
+    
+    
     //Number of Blocks
-    var NumberOfBlocks : Int = 3
+    var NumberOfBlocks : Int = 15
     
     //Block Spacing
-    var BlockSpacing : Int = 70
+    //includes the blocksize
+    //so actual spacing between blocks is BlockSpacing - BlockSize
+    
+    
+    var BlockSpacing : CGFloat = 50
     
     //Block Size
     var BlockSize : CGFloat = 50
     
     //Column One Color
     var ColumnOneColor : UIColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
+    
+    var ColumnTwoColor : UIColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
+    
+    var ColumnThreeColor : UIColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
     
     //var x = fetchData()
     
@@ -37,9 +49,13 @@ public class GameStage {
     
 
     
-    //The first column (the left one) that will keep track of the sum of colors somehow.
+    //The Three Column Positions (top left corner)
     
-    var ColumnOne : CGPoint = CGPoint(x: 50, y: 50)
+    var ColumnOnePosition : CGPoint = CGPoint(x: 0, y: 0)
+    
+    var ColumnTwoPosition : CGPoint = CGPoint(x: 10, y: 10)
+    
+    var ColumnThreePosition : CGPoint = CGPoint(x: 20, y: 20)
         
     
     
