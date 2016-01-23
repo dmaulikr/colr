@@ -59,12 +59,8 @@ class RoodViewController: UIViewController, GameViewDataSource {
     }
     
     
-    //The previous Color.
-    //regularly updated.
-    var PreviousColorOne : UIColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
-    var PreviousColorTwo : UIColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
-    var PreviousColorThree : UIColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
-    
+    //The previous Colors.
+    //regularly appended.
     
     var ColumnOneColors : [UIColor] = []
     
@@ -713,14 +709,25 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 //Set column color to white
                 
                 gameStage.ColumnOneColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
+                gameStage.ColumnTwoColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
+                gameStage.ColumnThreeColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
                 ColumnOneColors = []
-                PreviousColorOne = gameStage.ColumnOneColor
-                PreviousColorTwo = gameStage.ColumnOneColor
-                PreviousColorThree = gameStage.ColumnOneColor
+                ColumnTwoColors = []
+                ColumnThreeColors = []
+               
                 
                 
                 UpdateUI()
             }
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
             
             
