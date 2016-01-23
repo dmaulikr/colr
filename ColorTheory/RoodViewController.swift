@@ -66,6 +66,12 @@ class RoodViewController: UIViewController, GameViewDataSource {
     var PreviousColorThree : UIColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
     
     
+    var ColumnOneColors : [UIColor] = []
+    
+    var ColumnTwoColors : [UIColor] = []
+    
+    var ColumnThreeColors : [UIColor] = []
+    
     
     
     
@@ -279,39 +285,26 @@ class RoodViewController: UIViewController, GameViewDataSource {
                     
                     //Here is where the mixing of colors occurs. 
                     //Colors are mixed using CMYK addition.
-                    //The final color depends on the newly added one and the previous one.
-                    //The final color becomes the previous color in the end.
+                    //The final color depends on the previous colors in the column array.
                     
                     
-                    //set the color of the block that was just added to the columnOne bounds to NewColor)
+                    
+                    //set the color of the block that was just added to the columnOne bounds to AddedColor)
                     let AddedColor : UIColor = gameStage.ColorVector[l]
                     
-                    //Extract the RGB Components of this new color)
-                    let AddedColorComponents = AddedColor.components
+                    //Add to the array of colors for that column
+                    ColumnOneColors.append(AddedColor)
+                
                     
-                    //Calculate CMYK values using RGB to CMYK function
-                    let (C, M, Y, K) = RGBToCMYK(AddedColorComponents.red, g: AddedColorComponents.green, b: AddedColorComponents.blue)
-                    
-                    //get PreviousColor RGB Components
-                    let PreviousColorComponents = PreviousColorOne.components
-                    
-                    
-                    //Calculate CMYK values of PreviousColor
-                    let (C2, M2, Y2, K2) = RGBToCMYK(PreviousColorComponents.red, g: PreviousColorComponents.green, b: PreviousColorComponents.blue)
-                    
-                    
-                    //Calculate RGB values using MixColors function
-                    let (r, g, b) = MixColors(C, m1: M, y1: Y, k1: K, c2: C2, m2: M2, y2: Y2, k2: K2)
+                    //get the new column using MixColumnColors
+                    let NewColor = MixColumnColors(ColumnOneColors)
                     
                     
                     //Set ColumnOne's color to this final result
-                    gameStage.ColumnOneColor = UIColor(red: r, green: g, blue: b, alpha: 1)
+                    gameStage.ColumnOneColor = NewColor
                     
-                    //Set PreviousColor to this final result
-                    PreviousColorOne = UIColor(red: r, green: g, blue: b, alpha: 1)
                     
-                    //print new color
-                    //xprint(r, g, b)
+                    
                     
                     
                     
@@ -362,41 +355,23 @@ class RoodViewController: UIViewController, GameViewDataSource {
                     
                     //Here is where the mixing of colors occurs.
                     //Colors are mixed using CMYK addition.
-                    //The final color depends on the newly added one and the previous one.
-                    //The final color becomes the previous color in the end.
+                    //The final color depends on the previous colors in the column array.
                     
                     
-                    //set the color of the block that was just added to the columnOne bounds to NewColor)
+                    
+                    //set the color of the block that was just added to the columnOne bounds to AddedColor)
                     let AddedColor : UIColor = gameStage.ColorVector[l]
                     
-                    //Extract the RGB Components of this new color)
-                    let AddedColorComponents = AddedColor.components
-                    
-                    //Calculate CMYK values using RGB to CMYK function
-                    let (C, M, Y, K) = RGBToCMYK(AddedColorComponents.red, g: AddedColorComponents.green, b: AddedColorComponents.blue)
-                    
-                    //get PreviousColor RGB Components
-                    let PreviousColorComponents = PreviousColorTwo.components
+                    //Add to the array of colors for that column
+                    ColumnTwoColors.append(AddedColor)
                     
                     
-                    //Calculate CMYK values of PreviousColor
-                    let (C2, M2, Y2, K2) = RGBToCMYK(PreviousColorComponents.red, g: PreviousColorComponents.green, b: PreviousColorComponents.blue)
-                    
-                    
-                    //Calculate RGB values using MixColors function
-                    let (r, g, b) = MixColors(C, m1: M, y1: Y, k1: K, c2: C2, m2: M2, y2: Y2, k2: K2)
+                    //get the new column using MixColumnColors
+                    let NewColor = MixColumnColors(ColumnTwoColors)
                     
                     
                     //Set ColumnOne's color to this final result
-                    gameStage.ColumnTwoColor = UIColor(red: r, green: g, blue: b, alpha: 1)
-                    
-                    //Set PreviousColor to this final result
-                    PreviousColorTwo = UIColor(red: r, green: g, blue: b, alpha: 1)
-                    
-                    //print new color
-                    //print(r, g, b)
-                    
-                    
+                    gameStage.ColumnTwoColor = NewColor
                     
                     UpdateUI()
                     
@@ -444,40 +419,23 @@ class RoodViewController: UIViewController, GameViewDataSource {
                     
                     //Here is where the mixing of colors occurs.
                     //Colors are mixed using CMYK addition.
-                    //The final color depends on the newly added one and the previous one.
-                    //The final color becomes the previous color in the end.
+                    //The final color depends on the previous colors in the column array.
                     
                     
-                    //set the color of the block that was just added to the columnOne bounds to NewColor)
+                    
+                    //set the color of the block that was just added to the columnOne bounds to AddedColor)
                     let AddedColor : UIColor = gameStage.ColorVector[l]
                     
-                    //Extract the RGB Components of this new color)
-                    let AddedColorComponents = AddedColor.components
-                    
-                    //Calculate CMYK values using RGB to CMYK function
-                    let (C, M, Y, K) = RGBToCMYK(AddedColorComponents.red, g: AddedColorComponents.green, b: AddedColorComponents.blue)
-                    
-                    //get PreviousColor RGB Components
-                    let PreviousColorComponents = PreviousColorThree.components
+                    //Add to the array of colors for that column
+                    ColumnThreeColors.append(AddedColor)
                     
                     
-                    //Calculate CMYK values of PreviousColor
-                    let (C2, M2, Y2, K2) = RGBToCMYK(PreviousColorComponents.red, g: PreviousColorComponents.green, b: PreviousColorComponents.blue)
-                    
-                    
-                    //Calculate RGB values using MixColors function
-                    let (r, g, b) = MixColors(C, m1: M, y1: Y, k1: K, c2: C2, m2: M2, y2: Y2, k2: K2)
+                    //get the new column using MixColumnColors
+                    let NewColor = MixColumnColors(ColumnThreeColors)
                     
                     
                     //Set ColumnOne's color to this final result
-                    gameStage.ColumnThreeColor = UIColor(red: r, green: g, blue: b, alpha: 1)
-                    
-                    //Set PreviousColor to this final result
-                    PreviousColorThree = UIColor(red: r, green: g, blue: b, alpha: 1)
-                    
-                    //print new color
-                    //print(r, g, b)
-                    
+                    gameStage.ColumnThreeColor = NewColor
                     
                     
                     UpdateUI()
@@ -755,9 +713,12 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 //Set column color to white
                 
                 gameStage.ColumnOneColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
+                ColumnOneColors = []
                 PreviousColorOne = gameStage.ColumnOneColor
                 PreviousColorTwo = gameStage.ColumnOneColor
                 PreviousColorThree = gameStage.ColumnOneColor
+                
+                
                 UpdateUI()
             }
             
