@@ -567,7 +567,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 
                 //print(i)
                 //if the touch is within the block
-            if (WithinBoundsOf(touchCoordinates, AreaPoint: XYPoints[i], Area: CGPoint(x: blockSize, y: blockSize))) {
+            if (WithinBoundsOf(touchCoordinates, AreaPoint: XYPoints[i], Area: CGPoint(x: blockSize + 10, y: blockSize + 10))) {
                 
                 
                 
@@ -604,6 +604,9 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 //print("Changed \(OnLock)")
                 
                 
+                //fix mouse to center of block
+                XYPoints[i].x = touchCoordinates.x - blockSize/2
+                XYPoints[i].y = touchCoordinates.y - blockSize/2
                 
                 
                 XYPoints[i].x += Xdrag
@@ -664,6 +667,9 @@ class RoodViewController: UIViewController, GameViewDataSource {
             
             if (OnLock[i] == true)
             {
+               
+                
+                //then get translation
                 //print("Locked On: \(translation)")
                 let translation = gesture.translationInView(gameView)
                 let Xdrag = translation.x
