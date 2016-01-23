@@ -46,8 +46,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
     
     var touchCoordinates : CGPoint = CGPoint(x: 0, y: 0)
 
-    
-    
+    var tapTouchCoordinates : CGPoint = CGPoint(x: 0, y: 0)
     
 
     //Storage for XYPoints. For now, it stays here, in the Controller.
@@ -610,8 +609,9 @@ class RoodViewController: UIViewController, GameViewDataSource {
                 
             //while looping through blocks, get the latest touch coordinate (safer 
             //than getting it outside of the loop?)
-            let LatestTouchCoordinate = CGPoint(x: touchCoordinates.x + translation.x, y: touchCoordinates.y + translation.y)
+            let LatestTouchCoordinates = CGPoint(x: touchCoordinates.x + translation.x, y: touchCoordinates.y + translation.y)
                 
+            
             //print(translation)
             //if a block is already locked on (has a finger on it)
             //either by having the first touch placed over it,
@@ -644,7 +644,7 @@ class RoodViewController: UIViewController, GameViewDataSource {
             }
             
                 //else if block isn't set to lock yet, but user dragged over the block
-            else if (WithinBoundsOf(LatestTouchCoordinate, AreaPoint: XYPoints[i], Area: CGPoint(x: blockSize, y: blockSize)) && !WithinBoundsOf(touchCoordinates, AreaPoint: XYPoints[i], Area: CGPoint(x: blockSize, y: blockSize)))
+            else if (WithinBoundsOf(LatestTouchCoordinates, AreaPoint: XYPoints[i], Area: CGPoint(x: blockSize, y: blockSize)) && !WithinBoundsOf(touchCoordinates, AreaPoint: XYPoints[i], Area: CGPoint(x: blockSize, y: blockSize)))
             {
                 
                 
@@ -693,6 +693,8 @@ class RoodViewController: UIViewController, GameViewDataSource {
         print("TAPPED")
         //print(ColumnOneColorVector)
         //print(touchCoordinates)
+        //print(tapTouchCoordinates)
+        
         
         switch gesture.state {
             
@@ -703,19 +705,48 @@ class RoodViewController: UIViewController, GameViewDataSource {
         case .Ended:
             
             
-            if (WithinBoundsOf(touchCoordinates, AreaPoint: CGPoint(x: 0, y: 0), Area: CGPoint(x: 250, y: 900))){
+            if (WithinBoundsOf(tapTouchCoordinates, AreaPoint: CGPoint(x: 0, y: 150), Area: CGPoint(x: gameView.bounds.size.width/3, y: gameView.bounds.size.height))){
                 
                 
                 //Set column color to white
                 
                 gameStage.ColumnOneColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
-                gameStage.ColumnTwoColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
-                gameStage.ColumnThreeColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
-                ColumnOneColors = []
-                ColumnTwoColors = []
-                ColumnThreeColors = []
-               
                 
+                ColumnOneColors = []
+               
+                print("Cleared Column One")
+                
+                
+                UpdateUI()
+            }
+            
+            else if (WithinBoundsOf(tapTouchCoordinates, AreaPoint: CGPoint(x: gameView.bounds.size.width/3, y: 150), Area: CGPoint(x: gameView.bounds.size.width/3, y: gameView.bounds.size.height))){
+                
+                
+                //Set column color to white
+                
+                
+                gameStage.ColumnTwoColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
+                
+                ColumnTwoColors = []
+                
+                print("Cleared Column Two")
+                
+                
+                UpdateUI()
+            }
+            
+            else if (WithinBoundsOf(tapTouchCoordinates, AreaPoint: CGPoint(x: 2*(gameView.bounds.size.width/3), y: 150), Area: CGPoint(x: gameView.bounds.size.width/3, y: gameView.bounds.size.height))){
+                
+                
+                //Set column color to white
+                
+               
+                gameStage.ColumnThreeColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
+                
+                ColumnThreeColors = []
+                
+                print("Cleared Column Three")
                 
                 UpdateUI()
             }
@@ -740,7 +771,15 @@ class RoodViewController: UIViewController, GameViewDataSource {
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if let touch = touches.first {
             touchCoordinates = touch.locationInView(gameView)
-            //print(touchCoordinates)
+            //print("from changed \(touchCoordinates)")
+        }
+    }
+    
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let touch = touches.first {
+            tapTouchCoordinates = touch.locationInView(gameView)
+            print("from began \(tapTouchCoordinates)")
         }
     }
     
